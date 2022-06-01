@@ -9,6 +9,8 @@ import org.ghrobotics.lib.commands.FalconSubsystem
 import org.ghrobotics.lib.mathematics.units.SIUnit
 import org.ghrobotics.lib.mathematics.units.derived.Radian
 import org.ghrobotics.lib.mathematics.units.derived.Velocity
+import org.ghrobotics.lib.mathematics.units.derived.degrees
+import org.ghrobotics.lib.mathematics.units.derived.inDegrees
 import org.ghrobotics.lib.motors.ctre.falconFX
 import org.ghrobotics.lib.wrappers.networktables.get
 import kotlin.math.pow
@@ -17,6 +19,9 @@ import kotlin.math.tan
 object Shooter : FalconSubsystem() {
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
     private val ty = limeTable["ty"]
+    var turretAngle: Double
+        get() = angleAdjuster.encoder.position.inDegrees()
+        set(v) = angleAdjuster.setPosition(v.degrees)
 
     private var shooterAngle = Constants.debugTab2
         .add("Angle", 0.0)
