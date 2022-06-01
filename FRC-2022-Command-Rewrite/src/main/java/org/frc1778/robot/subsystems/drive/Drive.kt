@@ -10,14 +10,19 @@ import org.apache.commons.math3.geometry.euclidean.threed.Rotation
 import org.frc1778.robot.Constants
 import org.frc1778.robot.subsystems.drive.commands.TeleopDriveCommand
 import org.ghrobotics.lib.localization.TimePoseInterpolatableBuffer
+import org.ghrobotics.lib.mathematics.units.Meter
 import org.ghrobotics.lib.mathematics.units.SIUnit
+import org.ghrobotics.lib.mathematics.units.derived.Velocity
 import org.ghrobotics.lib.motors.ctre.falconFX
 import org.ghrobotics.lib.subsystems.drive.FalconWestCoastDrivetrain
 import org.ghrobotics.lib.utils.Source
+import kotlin.math.absoluteValue
 
 object Drive : FalconWestCoastDrivetrain() {
 
     private val navx: AHRS = AHRS()
+
+    var averageRobotVelocity:Source<SIUnit<Velocity<Meter>>> = { SIUnit(leftVelocity.value/rightVelocity.value.absoluteValue) }
 
     override val controller: RamseteController
         get() = RamseteController(2.0, 0.7)

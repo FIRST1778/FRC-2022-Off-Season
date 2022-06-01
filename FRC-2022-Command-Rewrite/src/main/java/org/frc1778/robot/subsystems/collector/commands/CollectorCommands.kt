@@ -7,7 +7,6 @@ import org.ghrobotics.lib.commands.FalconCommand
 
 
 
-var deployLast = true
 
 
 open class CollectorCommands : FalconCommand(Collector) {
@@ -17,11 +16,6 @@ open class CollectorCommands : FalconCommand(Collector) {
         if(!Drive.Autonomous.auto) {
 
 
-            if (!deployLast) {
-                if (deploySource()) Collector.toggleCollector()
-                deployLast = true
-            }
-            deployLast = deploySource()
             Collector.runCollector(if (collectSource()) 0.35 else if (reverse()) -.15 else 0.0)
         }
     }

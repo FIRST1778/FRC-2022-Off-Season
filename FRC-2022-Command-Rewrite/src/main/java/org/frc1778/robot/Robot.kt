@@ -2,9 +2,11 @@ package org.frc1778.robot
 
 import com.pathplanner.lib.PathPlanner
 import edu.wpi.first.math.trajectory.Trajectory
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import edu.wpi.first.wpilibj.util.Color
 import org.frc1778.robot.subsystems.climber.Climber
 import org.frc1778.robot.subsystems.collector.Collector
 import org.frc1778.robot.subsystems.drive.Drive
@@ -32,6 +34,9 @@ import org.ghrobotics.lib.wrappers.FalconTimedRobot
  */
 object Robot : FalconTimedRobot()
 {
+
+    lateinit var allianceColor: Color
+
     private var matchTimer = Timer()
     private val autoPath1 = Path()
     private val autoPath2 = Path()
@@ -391,6 +396,7 @@ object Robot : FalconTimedRobot()
     override fun robotPeriodic() {}
 
     override fun autonomousInit() {
+        allianceColor = if(DriverStation.getAlliance() == DriverStation.Alliance.Blue) Color.kBlue else Color.kRed
         matchTimer = Timer()
         Drive.Autonomous.auto = true
         Drive.resetEncoders()

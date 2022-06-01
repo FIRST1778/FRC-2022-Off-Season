@@ -32,6 +32,7 @@ object Constants {
         const val SHOOTER_FLYWHEEL = 19
         const val ANGLE_ADJUSTMENT = 21
         val NATIVE_ROTATION_MODEL = NativeUnitRotationModel(2048.nativeUnits)
+
     }
 
     object Loader {

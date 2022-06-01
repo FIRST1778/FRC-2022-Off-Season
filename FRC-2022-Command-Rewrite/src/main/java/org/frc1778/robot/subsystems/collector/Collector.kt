@@ -5,20 +5,28 @@ import org.frc1778.robot.Constants
 import org.frc1778.robot.subsystems.collector.commands.CollectorCommands
 import org.ghrobotics.lib.commands.FalconSubsystem
 import org.ghrobotics.lib.mathematics.units.SIUnit
+import org.ghrobotics.lib.mathematics.units.derived.Radian
+import org.ghrobotics.lib.mathematics.units.derived.radians
 import org.ghrobotics.lib.mathematics.units.nativeunit.DefaultNativeUnitModel
 import org.ghrobotics.lib.motors.ctre.falconFX
 import org.ghrobotics.lib.motors.rev.falconMAX
 
 
 object Collector : FalconSubsystem() {
-    private val miniLeftMaster = falconMAX(Constants.Collector.LEFT_MINI_MASTER, CANSparkMaxLowLevel.MotorType.kBrushless, DefaultNativeUnitModel) {
+
+    enum class Position(val position: SIUnit<Radian>) {
+        UP(0.radians),
+        DOWN(9.5.radians)
+    }
+
+    private val miniLeft = falconMAX(Constants.Collector.LEFT_MINI_MASTER, CANSparkMaxLowLevel.MotorType.kBrushless, DefaultNativeUnitModel) {
         brakeMode = true
         outputInverted = false
     }
 
-    val miniRightSlave = falconMAX(Constants.Collector.RIGHT_MINI_SLAVE, CANSparkMaxLowLevel.MotorType.kBrushless, DefaultNativeUnitModel) {
+    val miniRight = falconMAX(Constants.Collector.RIGHT_MINI_SLAVE, CANSparkMaxLowLevel.MotorType.kBrushless, DefaultNativeUnitModel) {
         brakeMode = true
-        outputInverted = false
+        outputInverted = true
     }
 
 
@@ -34,18 +42,14 @@ object Collector : FalconSubsystem() {
     var collectorDown = false
 
     fun runCollector(percent: Double) {
-        if(collectorDown) miniLeftMaster.setDutyCycle(percent)
+        miniLeft.setDutyCycle(percent)
+        miniRight.setDutyCycle(percent)
     }
 
-    fun toggleCollector() {
-        collectorDown = if(!collectorDown) {
-            deployMotor.setPosition(SIUnit(9.5))
-            true
-        } else {
-            deployMotor.setPosition(SIUnit(0.0))
-            false
-        }
-    }
+    var collectorPosition: Position
+        get() = if(deployMotor.encoder.position > Position.DOWN.position) Position.DOWN else Position.UP
+        set(v) = deployMotor.setPosition(v.position)
+
 
 
     init {

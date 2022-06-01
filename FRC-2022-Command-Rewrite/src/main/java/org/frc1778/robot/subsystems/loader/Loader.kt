@@ -1,13 +1,17 @@
 package org.frc1778.robot.subsystems.loader
 
 import com.revrobotics.CANSparkMaxLowLevel
+import com.revrobotics.ColorSensorV3
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.I2C
 import org.frc1778.robot.Constants
+import org.frc1778.robot.Robot.allianceColor
 import org.frc1778.robot.subsystems.loader.commands.LoaderCommands
 import org.ghrobotics.lib.commands.FalconSubsystem
 import org.ghrobotics.lib.mathematics.units.nativeunit.DefaultNativeUnitModel
 import org.ghrobotics.lib.motors.ctre.falconFX
 import org.ghrobotics.lib.motors.rev.falconMAX
+import org.ghrobotics.lib.utils.Source
 
 object Loader : FalconSubsystem() {
     private val mainMotor = falconFX(Constants.Loader.MAIN_WHEEL, DefaultNativeUnitModel) {
@@ -26,9 +30,15 @@ object Loader : FalconSubsystem() {
     }
 
     val loaderLineBreakSensor = DigitalInput(1 )
+    val colorSensor = ColorSensorV3(I2C.Port.kOnboard)
+
+    val badBallLoaded: Source<Boolean> = { colorSensor.color == allianceColor }
+
+
+    val isLoaded: Source<Boolean> = { loaderLineBreakSensor.get()}
 
     fun runMain(percent: Double) {
-        mainMotor.setDutyCycle(if(loaderLineBreakSensor.get() || percent < 0.0) percent else 0.0)
+        mainMotor.setDutyCycle(if(isLoaded() || percent < 0.0) percent else 0.0)
         hopperMotor.setDutyCycle(percent)
     }
     fun runLoader(percent: Double) {
