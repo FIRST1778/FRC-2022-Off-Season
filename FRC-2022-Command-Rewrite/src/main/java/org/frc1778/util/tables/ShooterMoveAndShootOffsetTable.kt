@@ -1,12 +1,10 @@
 package org.frc1778.util.tables
 
-import com.beust.klaxon.Parser
-import com.github.salomonbrys.kotson.double
-import com.google.gson.JsonObject
-import edu.wpi.first.wpilibj.Filesystem
 import org.ghrobotics.lib.mathematics.units.derived.degrees
 import org.ghrobotics.lib.mathematics.units.inches
 import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+import java.io.FileReader
 import java.io.FileWriter
 import java.io.PrintWriter
 import java.nio.charset.Charset
@@ -21,7 +19,26 @@ import kotlin.properties.Delegates
 import kotlin.system.exitProcess
 
 object ShooterMoveAndShootOffsetTable {
-    private var tableJson by Delegates.notNull<JsonObject>()
+    private var tableJson by Delegates.notNull<JSONObject>()
+    private data class RobotInfo(val state: DoubleArray, val offset: Double) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as RobotInfo
+
+            if (!state.contentEquals(other.state)) return false
+            if (offset != other.offset) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = state.contentHashCode()
+            result = 31 * result + offset.hashCode()
+            return result
+        }
+    }
 
     private const val h = 1.905
     private const val acel = -.05
@@ -32,7 +49,7 @@ object ShooterMoveAndShootOffsetTable {
         var totalTime = 0.0
         var count = 0
 
-        for(distance in 60..300) {
+        for(distance in 60..300 step 3) {
             val d = distance.inches.value
 
             val a = (30 * (0.75 + (3.302/d))).degrees.value
@@ -122,24 +139,15 @@ object ShooterMoveAndShootOffsetTable {
             }
         }
 
-        PrintWriter(FileWriter("ShooterMoveAndShootOffsetTable.json", Charset.defaultCharset()))
-            .use { it.write(json.toString()) }
+        PrintWriter(FileWriter("FRC-2022-Command-Rewrite/src/main/deploy/ShooterMoveAndShootOffsetTable.json", Charset.defaultCharset()))
+            .use { it.write(json.toJSONString()) }
         println("Total Calculation Time(s): $totalTime\t|\t Average Calculation Time(s): ${totalTime/count}")
     }
 
-    private fun parse(name: String): Any? {
-        val cls = Parser::class.java
-
-        return cls.getResourceAsStream(name)?.let { inputStream ->
-            return Parser.default().parse(inputStream)
-        }
-    }
 
     fun loadJson() {
+        tableJson = JSONParser().parse(FileReader("FRC-2022-Command-Rewrite/src/main/deploy/ShooterMoveAndShootOffsetTable.json")) as JSONObject
 
-//        val file = Filesystem.getDeployDirectory().toPath().toString() + "/ShooterMoveAndShootOffsetTable.json"
-        val file = "/ShooterMoveAndShootOffsetTable.json"
-        tableJson = parse(file)!! as JsonObject
     }
 
     private fun round(list: DoubleArray) {
@@ -154,7 +162,7 @@ object ShooterMoveAndShootOffsetTable {
         val key = k.toDoubleArray()
         round(key)
 
-        return tableJson[key.asList().toString()].asDouble
+        return tableJson[key.asList().toString()] as Double
     }
 
 }

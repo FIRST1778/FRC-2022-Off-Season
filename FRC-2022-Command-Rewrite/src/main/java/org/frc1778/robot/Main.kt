@@ -25,7 +25,7 @@ import java.io.File
 //fun main() = Robot.start()
 
 fun main() {
-//    ShooterMoveAndShootOffsetTable.generateJSON()
-    ShooterMoveAndShootOffsetTable.loadJson()
-    println(ShooterMoveAndShootOffsetTable[listOf(3.0, 2.0, 5.0)])
+    ShooterMoveAndShootOffsetTable.generateJSON()
+//    ShooterMoveAndShootOffsetTable.loadJson()
+//    println(ShooterMoveAndShootOffsetTable[listOf(3.0, 2.0, 5.0)])
 }
