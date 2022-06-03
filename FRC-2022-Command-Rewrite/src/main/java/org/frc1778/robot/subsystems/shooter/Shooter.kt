@@ -23,9 +23,13 @@ object Shooter : FalconSubsystem() {
         get() = angleAdjuster.encoder.position.inDegrees()
         set(v) = angleAdjuster.setPosition(v.degrees)
 
-    private var shooterAngle = Constants.debugTab2
-        .add("Angle", 0.0)
-        .entry
+    var shooterAngle: Double
+        get() = angleAdjuster.encoder.position.inDegrees()
+        set(v) = angleAdjuster.setPosition(v.degrees)
+
+//    private var shooterAngle = Constants.debugTab2
+//        .add("Angle", 0.0)
+//        .entry
 
 
     private var shooterVelocity = Constants.debugTab2
@@ -65,7 +69,7 @@ object Shooter : FalconSubsystem() {
     fun shoot() {
         val distance = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296)))
         val (v, a) = Shooter.getSetPositions(distance)
-        shooterAngle.setDouble(a.value)
+//        shooterAngle.setDouble(a.value)
         shooterVelocity.setDouble(v.value)
         Shooter.runShooter(v)
         Shooter.setAngle(a)
