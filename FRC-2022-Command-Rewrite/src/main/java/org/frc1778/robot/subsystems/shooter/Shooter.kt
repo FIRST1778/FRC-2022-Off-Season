@@ -6,11 +6,14 @@ import org.frc1778.robot.Constants
 import org.frc1778.robot.Constants.Shooter.NATIVE_ROTATION_MODEL
 import org.frc1778.robot.subsystems.shooter.commands.ShootCommand
 import org.ghrobotics.lib.commands.FalconSubsystem
+import org.ghrobotics.lib.mathematics.units.Meter
 import org.ghrobotics.lib.mathematics.units.SIUnit
 import org.ghrobotics.lib.mathematics.units.derived.Radian
 import org.ghrobotics.lib.mathematics.units.derived.Velocity
 import org.ghrobotics.lib.mathematics.units.derived.degrees
 import org.ghrobotics.lib.mathematics.units.derived.inDegrees
+import org.ghrobotics.lib.mathematics.units.meters
+import org.ghrobotics.lib.mathematics.units.second
 import org.ghrobotics.lib.motors.ctre.falconFX
 import org.ghrobotics.lib.wrappers.networktables.get
 import kotlin.math.pow
@@ -29,7 +32,7 @@ object Shooter : FalconSubsystem() {
 
     var shooterVelocity: Double
         get() = flywheelMotor.encoder.velocity.value
-        set(v) = flywheelMotor.setVelocity(v.metersPerSec)
+        set(v) = flywheelMotor.setVelocity(SIUnit(v))
 
 //    private var shooterAngle = Constants.debugTab2
 //        .add("Angle", 0.0)
@@ -42,7 +45,7 @@ object Shooter : FalconSubsystem() {
 
 
 
-    val flywheelMotor = falconFX(Constants.Shooter.SHOOTER_FLYWHEEL, NATIVE_SHOOTER_WHEEL_LENGTH_MODEL) {
+    val flywheelMotor = falconFX(Constants.Shooter.SHOOTER_FLYWHEEL, Constants.Shooter.NATIVE_SHOOTER_WHEEL_LENGTH_MODEL) {
         brakeMode = true
         outputInverted = false
 
@@ -62,7 +65,7 @@ object Shooter : FalconSubsystem() {
         flywheelMotor.setDutyCycle(percent)
     }
 
-    private fun runShooter(velocity: SIUnit<Velocity<Radian>>) {
+    private fun runShooter(velocity: SIUnit<Velocity<Meter>>) {
         flywheelMotor.setVelocity(velocity)
     }
 

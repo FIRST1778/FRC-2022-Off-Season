@@ -4,22 +4,22 @@ package org.frc1778.robot.commands.shooter
 
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
+import org.frc1778.robot.Controls
+import org.frc1778.robot.commands.Loader.Load
 import org.frc1778.robot.subsystems.collector.Collector
 import org.frc1778.robot.subsystems.drive.Drive
 import org.frc1778.robot.subsystems.loader.Loader
 import org.frc1778.robot.subsystems.shooter.Shooter
-import org.frc1778.util.Math
+import org.frc1778.util.UtilMath
 import org.ghrobotics.lib.commands.FalconCommand
-import org.ghrobotics.lib.mathematics.units.SIUnit
-import org.ghrobotics.lib.mathematics.units.derived.Radian
 import org.ghrobotics.lib.mathematics.units.derived.degrees
-import org.ghrobotics.lib.mathematics.units.derived.radians
 import org.ghrobotics.lib.mathematics.units.meters
+import org.ghrobotics.lib.utils.Source
 import org.ghrobotics.lib.wrappers.networktables.get
 import kotlin.math.*
 import kotlin.properties.Delegates
 
-class ShootAndAim : FalconCommand(Shooter, Loader, Collector, Drive){
+class ShootAndAim : FalconCommand(Shooter, Loader, Collector){
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
     private val h = 1.905
     private var a by Delegates.notNull<Double>()
@@ -30,7 +30,7 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector, Drive){
     private val tx = limeTable["tx"]
     private val ta = limeTable["ta"]
     private var loadCommand by Delegates.notNull<FalconCommand>()
-    private val shooterSource: Source<Boolean> = {Controls.operator.getRawButton(3)}
+    private val shooterSource: Source<Boolean> =  Controls.operatorController.getRawButton(3)
 
     override fun execute() {
         d = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296))).meters.value
@@ -52,13 +52,13 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector, Drive){
                     vx =  max(((midPoint - (.5 * acel * (vy/g).pow(2)))/(vy/-g)) + (vr * cos((angleToTarget).degrees.value)), 0.0)
                     val vz = -vr * sin((angleToTarget).degrees.value)
                     v = sqrt(vx.pow(2) + vy.pow(2) + vz.pow(2))
-                    targetAngle = Math.wrap(angleToTarget + atan2(vz, vx), -180, 180, 3.75)
+                    targetAngle = UtilMath.wrap((angleToTarget + atan2(vz, vx)), -180.0, 180.0, 3.75)
                 } else {
                     vx = (midPoint - (.5 * acel * (vy/g).pow(2)))/(vy/-g)
                     v = sqrt(vx.pow(2) + vy.pow(2))
-                    targetAngle = Math.wrap(angleToTarget + ty.getDouble(0.0), -180, 180, 3.75)
+                    targetAngle = UtilMath.wrap(angleToTarget + ty.getDouble(0.0), -180.0, .0, 3.75)
                 }
-                shooterAngle = Math.limit(atan2(vy, vx), 15, 35)
+                shooterAngle = UtilMath.clamp(atan2(vy, vx), 15.0, 35.0)
 
 
 
@@ -76,9 +76,9 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector, Drive){
                     if(Loader.isLoaded()) {
                         Collector.runCollector(0.0)
                         Loader.runMain(0.0)
-                        if(loadCommand?.isFinished() ?: true) {
+                        if(loadCommand.isFinished) {
                             loadCommand = Load()
-                            Loader.schedule(loadCommand)
+                            loadCommand.schedule()
                         }
                     } else {
                         Collector.runCollector(.35)

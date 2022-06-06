@@ -10,7 +10,7 @@ import org.frc1778.util.pathing.Event
 
 object ShooterOn: Event() {
     override fun execute(timer: Timer): Boolean {
-        Shooter.shoot()
+//        Shooter.shoot()
         return true
     }
 }

@@ -7,7 +7,7 @@ import kotlin.properties.Delegates
 
 class Load: FalconCommand(Loader) {
     private var startTime by Delegates.notNull<Double>()
-    private var isFinished = false
+    private var done = false
 
     override fun initialize() {
         startTime = Timer.getMatchTime()
@@ -29,9 +29,9 @@ class Load: FalconCommand(Loader) {
 
 
     override fun end(interrupted: Boolean) {
-        isFinished = true
+        done = true
         Loader.backUpLoader(0.0)
     }
 
-    override fun isFInshed() = isFinished
+    override fun isFinished() = done
 }
