@@ -8,6 +8,7 @@ import org.frc1778.robot.subsystems.collector.Collector
 import org.frc1778.robot.subsystems.drive.Drive
 import org.frc1778.robot.subsystems.loader.Loader
 import org.frc1778.robot.subsystems.shooter.Shooter
+import org.frc1778.util.Math
 import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.mathematics.units.SIUnit
 import org.ghrobotics.lib.mathematics.units.derived.Radian
@@ -29,6 +30,7 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector, Drive){
     private val tx = limeTable["tx"]
     private val ta = limeTable["ta"]
     private var loadCommand by Delegates.notNull<FalconCommand>()
+    private val shooterSource: Source<Boolean> = {Controls.operator.getRawButton(3)}
 
     override fun execute() {
         d = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296))).meters.value
@@ -41,6 +43,7 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector, Drive){
         val angleToTarget = Shooter.turretAngle + ty.getDouble(0.0)
         var shooterAngle by Delegates.notNull<Double>()
         var targetAngle by Delegates.notNull<Double>()
+        
         if((Drive.rightVelocity.value.sign == Drive.leftVelocity.value.sign)){
             if(!Loader.badBallLoaded()) {
                 if((abs(Drive.rightVelocity.value) > .2 && abs(Drive.leftVelocity.value) > .2)){
@@ -49,23 +52,42 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector, Drive){
                     vx =  max(((midPoint - (.5 * acel * (vy/g).pow(2)))/(vy/-g)) + (vr * cos((angleToTarget).degrees.value)), 0.0)
                     val vz = -vr * sin((angleToTarget).degrees.value)
                     v = sqrt(vx.pow(2) + vy.pow(2) + vz.pow(2))
-                    targetAngle = angleToTarget + atan2(vz, vx)
+                    targetAngle = Math.wrap(angleToTarget + atan2(vz, vx), -180, 180, 3.75)
                 } else {
                     vx = (midPoint - (.5 * acel * (vy/g).pow(2)))/(vy/-g)
                     v = sqrt(vx.pow(2) + vy.pow(2))
-                    targetAngle = angleToTarget + ty.getDouble(0.0)
+                    targetAngle = Math.wrap(angleToTarget + ty.getDouble(0.0), -180, 180, 3.75)
                 }
-                shooterAngle = atan2(vy, vx)
+                shooterAngle = Math.limit(atan2(vy, vx), 15, 35)
 
 
 
             } else {
                 v = 1.0
                 shooterAngle = 30.0
+                targetAngle = if(angleToTarget.sign == -1.0) angleToTarget + 75.0 else angleToTarget - 75.0
             }
             Shooter.turretAngle = targetAngle
-            Shooter.shooterAngle = shooterAngle
+
+            if(shooterSource()) {
+                Shooter.shooterAngle = shooterAngle
+            
+                if(abs(Shooter.turretAngle - targetAngle) < .35 && abs(Shooter.shooterAngle - shooterAngle) < .35){
+                    if(Loader.isLoaded()) {
+                        Collector.runCollector(0.0)
+                        Loader.runMain(0.0)
+                        if(loadCommand?.isFinished() ?: true) {
+                            loadCommand = Load()
+                            Loader.schedule(loadCommand)
+                        }
+                    } else {
+                        Collector.runCollector(.35)
+                        Loader.runMain(.20)
+                    }
+                }
+            }
         }
+        
     }
 
 

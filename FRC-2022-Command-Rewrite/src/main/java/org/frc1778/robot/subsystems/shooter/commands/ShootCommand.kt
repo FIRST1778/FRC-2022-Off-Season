@@ -22,7 +22,7 @@ open class ShootCommand : FalconCommand(Shooter) {
 
 
             if (getRunShooter()) {
-                Shooter.shoot()
+                // Shooter.shoot()
             } else {
                 Shooter.runShooter(0.0)
             }
