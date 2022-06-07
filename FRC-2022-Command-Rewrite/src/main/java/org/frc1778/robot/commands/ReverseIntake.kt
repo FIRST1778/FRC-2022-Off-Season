@@ -11,6 +11,10 @@ class ReverseIntake : FalconCommand(Collector, Loader) {
     }
 
     override fun cancel() {
+        end(true)
+    }
+
+    override fun end(interrupted: Boolean) {
         Collector.runCollector(0.0)
         Loader.runMain(0.0)
     }

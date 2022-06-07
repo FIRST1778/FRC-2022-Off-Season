@@ -49,10 +49,50 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector){
                 if((abs(Drive.rightVelocity.value) > .2 && abs(Drive.leftVelocity.value) > .2)){
                     val vr = Drive.averageRobotVelocity().value
 
-                    vx =  max(((midPoint - (.5 * acel * (vy/g).pow(2)))/(vy/-g)) + (vr * cos((angleToTarget).degrees.value)), 0.0)
-                    val vz = -vr * sin((angleToTarget).degrees.value)
-                    v = sqrt(vx.pow(2) + vy.pow(2) + vz.pow(2))
-                    targetAngle = UtilMath.wrap((angleToTarget + atan2(vz, vx)), -180.0, 180.0, 3.75)
+                    var minValue by Delegates.notNull<Double>()
+                    var bestOffset = 0.0
+
+                    fun vxf(x: Double) : Double = max(vx + (vr * cos((turretAngle + x).degrees.value)), 0.0)
+                    fun vz(x: Double) : Double = -vxf(x) * tan(x.degrees.value)
+                    fun vp(x: Double) : Double = vr * tan(x.degrees.value)
+
+//                    println("Testing Functions: vxf: ${vxf(0.1)} \t|\t vz: ${vz(0.1)} \t|\t vp${vp(0.1)}")
+
+                    val diffPositive = abs(((vp(0.1) + vz(0.1)) * t) + (0.5 * (acel) * t.pow(2)) - (d * tan(0.1.degrees.value)))
+                    val diffNegative = abs(((vp(-0.1) + vz(-0.1)) * t) + (0.5 * (acel) * t.pow(2)) - (d * tan((-0.1).degrees.value)))
+//                    println("diffPositive: $diffPositive \t|\t diffNegative: $diffNegative")
+
+                    if(diffPositive < diffNegative) {
+                        minValue = diffPositive
+                        var lastValue = minValue
+
+                        for(offset in 1..250) {
+                            val theta = offset.toDouble()/10.0
+
+                            val diff = abs(((vp(theta) + vz(theta)) * t) + (0.5 * (acel) * t.pow(2)) - (d * tan(theta.degrees.value)))
+                            if(diff < minValue) {
+                                minValue = diff
+                                bestOffset = theta
+                            }
+                            if(diff > lastValue) break
+                            lastValue = diff
+                        }
+                    } else {
+                        minValue = diffNegative
+                        var lastValue = minValue
+
+                        for(offset in -1 downTo -250) {
+                            val theta = (offset.toDouble()/10.0)
+
+                            val diff = abs(((vp(theta) + vz(theta)) * t) + (0.5 * (acel) * t.pow(2)) - (d * tan(theta.degrees.value)))
+                            if(diff < minValue) {
+                                minValue = diff
+                                bestOffset = theta
+                            }
+                            if(diff > lastValue) break
+                            lastValue = diff
+                        }
+                    }
                 } else {
                     vx = (midPoint - (.5 * acel * (vy/g).pow(2)))/(vy/-g)
                     v = sqrt(vx.pow(2) + vy.pow(2))

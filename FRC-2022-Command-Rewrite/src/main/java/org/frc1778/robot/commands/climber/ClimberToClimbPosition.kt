@@ -8,4 +8,12 @@ class ClimberToClimbPosition : FalconCommand(Climber) {
     override fun execute() {
         Climber.position = (-1.0).radians
     }
+
+    override fun cancel() {
+        Climber.position = 0.radians
+    }
+
+    override fun isFinished(): Boolean {
+        return Climber.position == (-1).radians
+    }
 }

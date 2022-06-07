@@ -9,6 +9,10 @@ class ReverseCollector : FalconCommand(Collector) {
     }
 
     override fun cancel() {
+        end(true)
+    }
+
+    override fun end(interrupted: Boolean) {
         Collector.runCollector(0.0)
     }
 }

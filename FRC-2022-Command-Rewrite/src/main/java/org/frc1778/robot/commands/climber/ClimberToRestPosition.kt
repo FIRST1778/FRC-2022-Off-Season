@@ -8,4 +8,8 @@ class ClimberToRestPosition : FalconCommand(Climber) {
     override fun execute() {
         Climber.position = 0.0.radians
     }
+
+    override fun isFinished(): Boolean {
+        return Climber.position == 0.0.radians
+    }
 }
