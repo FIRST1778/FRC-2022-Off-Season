@@ -43,16 +43,17 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector){
         val angleToTarget = Shooter.turretAngle + ty.getDouble(0.0)
         var shooterAngle by Delegates.notNull<Double>()
         var targetAngle by Delegates.notNull<Double>()
-        
-        if((Drive.rightVelocity.value.sign == Drive.leftVelocity.value.sign)){
+
+        if(ta.getDouble(0.0) < .1) {
+            if((Drive.rightVelocity.value.sign == Drive.leftVelocity.value.sign)){
             if(!Loader.badBallLoaded()) {
                 if((abs(Drive.rightVelocity.value) > .2 && abs(Drive.leftVelocity.value) > .2)){
                     val vr = Drive.averageRobotVelocity().value
-
+                    val t = d/vx
                     var minValue by Delegates.notNull<Double>()
                     var bestOffset = 0.0
 
-                    fun vxf(x: Double) : Double = max(vx + (vr * cos((turretAngle + x).degrees.value)), 0.0)
+                    fun vxf(x: Double) : Double = max(vx + (vr * cos((angleToTarget + x).degrees.value)), 0.0)
                     fun vz(x: Double) : Double = -vxf(x) * tan(x.degrees.value)
                     fun vp(x: Double) : Double = vr * tan(x.degrees.value)
 
@@ -93,6 +94,9 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector){
                             lastValue = diff
                         }
                     }
+
+                    v = sqrt(vz(bestOffset).pow(2) + vxf(bestOffset).pow(2) + vy.pow(2))
+                    targetAngle = UtilMath.wrap(angleToTarget + bestOffset, -180.0, 180.0)
                 } else {
                     vx = (midPoint - (.5 * acel * (vy/g).pow(2)))/(vy/-g)
                     v = sqrt(vx.pow(2) + vy.pow(2))
@@ -127,7 +131,9 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector){
                 }
             }
         }
-        
+        } else {
+            Shooter.turretAngle =  if(Shooter.turretAngle <= 0) -180.0 else 180.0
+        }
     }
 
 
