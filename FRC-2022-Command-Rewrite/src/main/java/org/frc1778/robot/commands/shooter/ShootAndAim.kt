@@ -19,7 +19,12 @@ import org.ghrobotics.lib.wrappers.networktables.get
 import kotlin.math.*
 import kotlin.properties.Delegates
 
-class ShootAndAim : FalconCommand(Shooter, Loader, Collector){
+/**
+ * New commands to shoot and aim to be used with new turret design and
+ *
+ * @constructor Create empty Shoot and aim
+ */
+class ShootAndAim : FalconCommand(Shooter, Collector){
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
     private val h = 1.905
     private var a by Delegates.notNull<Double>()
@@ -44,7 +49,7 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector){
         var shooterAngle by Delegates.notNull<Double>()
         var targetAngle by Delegates.notNull<Double>()
 
-        if(ta.getDouble(0.0) < .1) {
+        if(ta.getDouble(0.0) > .1) {
             if((Drive.rightVelocity.value.sign == Drive.leftVelocity.value.sign)){
             if(!Loader.badBallLoaded()) {
                 if((abs(Drive.rightVelocity.value) > .2 && abs(Drive.leftVelocity.value) > .2)){
@@ -132,7 +137,20 @@ class ShootAndAim : FalconCommand(Shooter, Loader, Collector){
             }
         }
         } else {
-            Shooter.turretAngle =  if(Shooter.turretAngle <= 0) -180.0 else 180.0
+            targetAngle = if(Shooter.turretAngle <= 0.0) {
+                if(Shooter.turretAngle < -175.0) {
+                    180.0
+                } else {
+                    -180.0
+                }
+            } else {
+                if(Shooter.turretAngle > 175.0) {
+                    -180.0
+                } else {
+                    180.0
+                }
+            }
+            Shooter.turretAngle = targetAngle
         }
     }
 
