@@ -9,11 +9,14 @@ class ClimberToClimbPosition : FalconCommand(Climber) {
         Climber.position = (-1.0).radians
     }
 
-    override fun cancel() {
-        Climber.position = 0.radians
-    }
-
     override fun isFinished(): Boolean {
         return Climber.position == (-1).radians
     }
+
+    override fun end(interrupted: Boolean) {
+        if(interrupted) {
+            Climber.position = 0.radians
+        }
+    }
+
 }

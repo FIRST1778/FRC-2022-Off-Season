@@ -5,6 +5,7 @@ import org.frc1778.robot.commands.climber.ClimberToClimbPosition
 import org.frc1778.robot.commands.climber.ClimberToRestPosition
 import org.frc1778.robot.commands.climber.DeployHook1
 import org.frc1778.robot.commands.climber.DeployHook2
+import org.frc1778.robot.commands.shooter.Shoot
 import org.ghrobotics.lib.wrappers.hid.FalconHIDBuilder
 import org.ghrobotics.lib.wrappers.hid.mapControls
 
@@ -32,6 +33,9 @@ object Controls {
         }
         button(5) {
             changeOn(ClimberToClimbPosition())
+        }
+        button(3) {
+            change(Shoot())
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.frc1778.robot.commands.Loader
+package org.frc1778.robot.commands.loader
 
 import edu.wpi.first.wpilibj.Timer
 import org.frc1778.robot.subsystems.loader.Loader
@@ -15,16 +15,10 @@ class Load: FalconCommand(Loader) {
 
     override fun execute() {
         if(Timer.getMatchTime() - startTime < .375) {
-            end(false)
-        } else {
             Loader.backUpLoader(.15)
+        } else {
+            end(false)
         }
-
-
-    }
-
-    override fun cancel () {
-        end(true)
     }
 
 

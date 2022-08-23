@@ -8,9 +8,6 @@ class RunCollector : FalconCommand(Collector) {
         Collector.runCollector(.35)
     }
 
-    override fun cancel() {
-        end(true)
-    }
 
     override fun end(interrupted: Boolean) {
         Collector.runCollector(0.0)

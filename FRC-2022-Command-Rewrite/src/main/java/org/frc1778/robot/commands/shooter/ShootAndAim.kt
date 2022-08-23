@@ -5,7 +5,7 @@ package org.frc1778.robot.commands.shooter
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
 import org.frc1778.robot.Controls
-import org.frc1778.robot.commands.Loader.Load
+import org.frc1778.robot.commands.loader.Load
 import org.frc1778.robot.subsystems.collector.Collector
 import org.frc1778.robot.subsystems.drive.Drive
 import org.frc1778.robot.subsystems.loader.Loader
