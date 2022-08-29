@@ -96,11 +96,12 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     implementation "com.github.MTHSRoboticsClub:freezylib:-SNAPSHOT"
-    implementation 'com.github.FIRST1778.FalconLibrary:core:2022.4.11_BETA'
-    implementation 'com.github.FIRST1778.FalconLibrary:vendorREV:2022.4.11_BETA'
-    implementation 'com.github.FIRST1778.FalconLibrary:vendorCTRE:2022.4.11_BETA'
-    implementation 'com.github.FIRST1778.FalconLibrary:vendorPWF:2022.4.11_BETA'
-    implementation 'com.github.FIRST1778.FalconLibrary:wpi:2022.4.11_BETA'
+    implementation 'com.github.FIRST1778.FalconLibrary:2022.4.11_BETA'
+//    implementation 'com.github.FIRST1778.FalconLibrary:core:2022.4.11_BETA'
+//    implementation 'com.github.FIRST1778.FalconLibrary:vendorREV:2022.4.11_BETA'
+//    implementation 'com.github.FIRST1778.FalconLibrary:vendorCTRE:2022.4.11_BETA'
+//    implementation 'com.github.FIRST1778.FalconLibrary:vendorPWF:2022.4.11_BETA'
+//    implementation 'com.github.FIRST1778.FalconLibrary:wpi:2022.4.11_BETA'
 
 
 

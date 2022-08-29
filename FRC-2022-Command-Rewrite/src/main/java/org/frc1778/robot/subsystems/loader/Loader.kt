@@ -30,12 +30,12 @@ object Loader : FalconSubsystem() {
     }
 
     val loaderLineBreakSensor = DigitalInput(1 )
-    private val colorSensor = ColorSensorV3(I2C.Port.kOnboard)
+//    private val colorSensor = ColorSensorV3(I2C.Port.kOnboard)
 
-    val badBallLoaded: Source<Boolean> = { colorSensor.color == allianceColor }
+    val badBallLoaded: Source<Boolean> = {false} //{ colorSensor.color == allianceColor }
 
 
-    val isLoaded: Source<Boolean> = { loaderLineBreakSensor.get()}
+    val isLoaded: Source<Boolean> = {!loaderLineBreakSensor.get()}
 
     fun runMain(percent: Double) {
         mainMotor.setDutyCycle(if(isLoaded() || percent < 0.0) percent else 0.0)
@@ -47,13 +47,21 @@ object Loader : FalconSubsystem() {
         if(percent != 0.0) hopperMotor.setDutyCycle(percent)
     }
 
-    fun backUpLoader(percent: Double) {
+    fun runMainMotor(percent: Double) {
+        mainMotor.setDutyCycle(percent)
+    }
+
+    fun runLoaderMotor(percent: Double) {
+        loaderMotor.setDutyCycle(percent)
+    }
+
+    fun load(percent: Double) {
         loaderMotor.setDutyCycle(percent)
         mainMotor.setDutyCycle(percent)
     }
 
     init {
-        defaultCommand = LoaderCommands()
+//        defaultCommand = LoaderCommands()
     }
 
 }

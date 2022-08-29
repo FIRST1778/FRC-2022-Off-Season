@@ -6,6 +6,7 @@ import org.frc1778.robot.subsystems.loader.Loader
 import org.ghrobotics.lib.commands.FalconCommand
 
 class RunIntake : FalconCommand(Collector, Loader) {
+    private var done = false
     override fun execute() {
         Collector.runCollector(.35)
         Loader.runMain(if(!Loader.isLoaded()) .20 else 0.0)
@@ -16,9 +17,12 @@ class RunIntake : FalconCommand(Collector, Loader) {
     }
 
     override fun end(interrupted: Boolean) {
+        done = true
         Collector.runCollector(0.0)
         Loader.runMain(0.0)
     }
+
+    override fun isFinished() = done
 
 
 }

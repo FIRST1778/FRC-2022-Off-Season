@@ -24,7 +24,8 @@ object Shooter : FalconSubsystem() {
     private val ty = limeTable["ty"]
     var turretAngle: Double
         get() = angleAdjuster.encoder.position.inDegrees()
-        set(v) = angleAdjuster.setPosition(v.degrees)
+        set(v) {}
+//        set(v) = angleAdjuster.setPosition(v.degrees)
 
     var shooterAngle: Double
         get() = angleAdjuster.encoder.position.inDegrees()
@@ -33,15 +34,6 @@ object Shooter : FalconSubsystem() {
     var shooterVelocity: Double
         get() = flywheelMotor.encoder.velocity.value
         set(v) = flywheelMotor.setVelocity(SIUnit(v))
-
-//    private var shooterAngle = Constants.debugTab2
-//        .add("Angle", 0.0)
-//        .entry
-
-
-    // private var shooterVelocity = Constants.debugTab2
-    //     .add("Velocity", 0.0)
-    //     .entry
 
 
 
@@ -73,6 +65,10 @@ object Shooter : FalconSubsystem() {
         angleAdjuster.setPosition(angle)
     }
 
+    fun toIdle() {
+        flywheelMotor.setDutyCycle(0.0)
+    }
+
 //     fun shoot() {
 //         val distance = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296)))
 //         val (v, a) = Shooter.getSetPositions(distance)
@@ -98,7 +94,7 @@ object Shooter : FalconSubsystem() {
 
 
     init {
-        defaultCommand = ShootCommand()
+//        defaultCommand = ShootCommand()
 
         angleEncoder.resetPosition(SIUnit(0.0))
 

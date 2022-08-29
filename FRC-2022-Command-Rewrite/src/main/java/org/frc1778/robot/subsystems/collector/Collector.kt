@@ -61,7 +61,7 @@ object Collector : FalconSubsystem() {
         deployMotor.motorController.config_kD(0, 16.0, 30)
 
 
-        defaultCommand = CollectorCommands()
+//        defaultCommand = CollectorCommands()
     }
 
 

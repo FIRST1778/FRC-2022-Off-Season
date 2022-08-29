@@ -18,37 +18,45 @@ import kotlin.math.pow
 import kotlin.math.tan
 import kotlin.properties.Delegates
 
-class Shoot: FalconCommand(Shooter, Loader, Collector) {
+class Shoot : FalconCommand(Shooter, Loader, Collector) {
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
     private val timer: Timer = Timer()
     private val ty = limeTable["ty"]
-    private val tx = limeTable["tx"]
-    private val ta = limeTable["ta"]
     private val velocityThreshold = 5.0
     private val angleThreshold = .125
     private var d by Delegates.notNull<Double>()
     private var v by Delegates.notNull<SIUnit<Velocity<Radian>>>()
     private var a by Delegates.notNull<SIUnit<Radian>>()
-    private var startTime by Delegates.notNull<Double>()
     private var loadCommand: FalconCommand? = null
     private var done = false
 
     override fun execute() {
         timer.start()
         d = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296))).meters.value
-        v = if(d > 75)  {
-            SIUnit(((((0.0004 * d.pow(3)) - (0.109 * d.pow(2)) + (11.759 * d) + 39.691))* (.86*((d-150)/750))) + 700 - if(d < 150) 20.5 else 15.0)
+        v = if (d > 75) {
+            SIUnit(
+                ((((0.0004 * d.pow(3)) - (0.109 * d.pow(2)) + (11.759 * d) + 39.691))
+                        * (.86 * ((d - 150) / 750))) + 700 - if (d < 150) 20.5 else 15.0
+            )
         } else {
-            SIUnit(((0.0004 * d.pow(3)) - (0.117 * d.pow(2)) + (11.759 * d) + 39.691) + if(d > 75) 25.0 else 10.25)
+            SIUnit(
+                ((0.0004 * d.pow(3)) - (0.117 * d.pow(2))
+                        + (11.759 * d) + 39.691) + if (d > 75) 25.0 else 10.25
+            )
         }
-        a = SIUnit((-(7.324605E-9 * d.pow(4)) + (4.4445282E-6 * d.pow(3)) - (9.211335E-4 * d.pow(2)) + (.1009318946 * d) - .078396) + if(d > 150) .75 else if(d > 120) .825 else if(d < 90) .205 else 0.225)
+        a = SIUnit(
+            (-(7.324605E-9 * d.pow(4)) + (4.4445282E-6 * d.pow(3)) - (9.211335E-4 * d.pow(2))
+                    + (.1009318946 * d) - .078396) + if (d > 150) .75 else if (d > 120) .825 else if (d < 90) .205 else 0.225
+        )
 
 
         Shooter.shooterVelocity = v.value
         Shooter.shooterAngle = a.value
-        if(abs(Shooter.shooterVelocity - v.value) < velocityThreshold && abs(Shooter.shooterAngle - a.value) < angleThreshold) {
-            if(Loader.isLoaded()) {
-                if(loadCommand?.isFinished != false) {
+        if (abs(Shooter.shooterVelocity - v.value) < velocityThreshold
+            && abs(Shooter.shooterAngle - a.value) < angleThreshold
+        ) {
+            if (Loader.isLoaded()) {
+                if (loadCommand?.isFinished != false) {
                     loadCommand = Load()
                     loadCommand?.schedule()
                 }
@@ -57,7 +65,6 @@ class Shoot: FalconCommand(Shooter, Loader, Collector) {
                 Loader.runMain(.20)
             }
         }
-
 
 
     }
