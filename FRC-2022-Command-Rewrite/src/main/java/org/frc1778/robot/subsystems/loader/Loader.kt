@@ -3,6 +3,7 @@ package org.frc1778.robot.subsystems.loader
 import com.revrobotics.CANSparkMaxLowLevel
 import com.revrobotics.ColorSensorV3
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.I2C
 import org.frc1778.robot.Constants
 import org.frc1778.robot.Robot.allianceColor
@@ -38,7 +39,7 @@ object Loader : FalconSubsystem() {
     val isLoaded: Source<Boolean> = {!loaderLineBreakSensor.get()}
 
     fun runMain(percent: Double) {
-        mainMotor.setDutyCycle(if(isLoaded() || percent < 0.0) percent else 0.0)
+        mainMotor.setDutyCycle(if (!isLoaded() || percent < 0.0) percent else 0.0)
         hopperMotor.setDutyCycle(percent)
     }
     fun runLoader(percent: Double) {
@@ -55,9 +56,16 @@ object Loader : FalconSubsystem() {
         loaderMotor.setDutyCycle(percent)
     }
 
+    fun runHopperMotor(percent: Double) {
+        hopperMotor.setDutyCycle(percent)
+    }
+
     fun load(percent: Double) {
         loaderMotor.setDutyCycle(percent)
         mainMotor.setDutyCycle(percent)
+    }
+
+    override fun periodic() {
     }
 
     init {

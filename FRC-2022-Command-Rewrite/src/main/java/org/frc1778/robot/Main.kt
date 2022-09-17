@@ -2,7 +2,7 @@
 // set the compiled Java class name to "Main" rather than "MainKt"
 package org.frc1778.robot
 
-import org.frc1778.util.tables.ShooterMoveAndShootOffsetTable
+//import org.frc1778.util.tables.ShooterMoveAndShootOffsetTable
 import java.io.File
 
 
@@ -22,10 +22,10 @@ import java.io.File
  * Refactoring when renaming the object, it will get changed everywhere
  * including here.)
  */
-//fun main() = Robot.start()
+fun main() = Robot.start()
 
-fun main() {
-    ShooterMoveAndShootOffsetTable.generateJSON()
-//    ShooterMoveAndShootOffsetTable.loadJson()
-//    println(ShooterMoveAndShootOffsetTable[listOf(3.0, 2.0, 5.0)])
-}
+//fun main() {
+//
+////    ShooterMoveAndShootOffsetTable.loadJson()
+////    println(ShooterMoveAndShootOffsetTable[listOf(3.0, 2.0, 5.0)])
+//}

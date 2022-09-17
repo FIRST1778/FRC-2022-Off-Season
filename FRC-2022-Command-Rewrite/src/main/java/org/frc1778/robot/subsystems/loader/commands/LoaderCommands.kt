@@ -10,7 +10,8 @@ open class LoaderCommands : FalconCommand(Loader){
     override fun execute() {
         if(!Drive.Autonomous.auto) {
             Loader.runMain(if (mainSource()) .20 else if (reverse()) -.15 else 0.0)
-            Loader.backUpLoader(if(backUpLoaderSource()) 0.15 else 0.0)
+            Loader.runLoader(if(backUpLoaderSource()) 0.15 else 0.0)
+//            Loader.backUpLoader(if(backUpLoaderSource()) 0.15 else 0.0)
         }
     }
     companion object {
