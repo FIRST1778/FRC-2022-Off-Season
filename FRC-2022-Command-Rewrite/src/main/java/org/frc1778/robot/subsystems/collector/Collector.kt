@@ -1,6 +1,7 @@
 package org.frc1778.robot.subsystems.collector
 
 import com.revrobotics.CANSparkMaxLowLevel
+import edu.wpi.first.wpilibj.DriverStation
 import org.frc1778.robot.Constants
 import org.frc1778.robot.subsystems.collector.commands.CollectorCommands
 import org.ghrobotics.lib.commands.FalconSubsystem
@@ -13,6 +14,8 @@ import org.ghrobotics.lib.motors.rev.falconMAX
 
 
 object Collector : FalconSubsystem() {
+
+    var collectorUp = true
 
     enum class Position(val position: SIUnit<Radian>) {
         UP(0.radians),
@@ -42,6 +45,7 @@ object Collector : FalconSubsystem() {
     var collectorDown = false
 
     fun runCollector(percent: Double) {
+//        DriverStation.reportError("Collector Motors set to $percent", false)
         miniLeft.setDutyCycle(percent)
         miniRight.setDutyCycle(percent)
     }
@@ -54,14 +58,14 @@ object Collector : FalconSubsystem() {
 
     init {
         deployMotor.encoder.resetPosition(SIUnit(0.0))
-        deployMotor.motorController.configAllowableClosedloopError(0, 100.0, 30)
+        deployMotor.motorController.configAllowableClosedloopError(0, 150.0, 30)
         deployMotor.motorController.config_kF(0, 0.075, 30)
         deployMotor.motorController.config_kP(0, 1.6, 30)
         deployMotor.motorController.config_kI(0, 0.0, 30)
         deployMotor.motorController.config_kD(0, 16.0, 30)
 
 
-        defaultCommand = CollectorCommands()
+//        defaultCommand = CollectorCommands()
     }
 
 

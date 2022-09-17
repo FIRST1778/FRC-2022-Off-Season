@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj.util.Color
+import edu.wpi.first.wpilibj2.command.CommandScheduler
+import org.frc1778.robot.commands.collector.ToggleCollector
 import org.frc1778.robot.subsystems.climber.Climber
 import org.frc1778.robot.subsystems.collector.Collector
 import org.frc1778.robot.subsystems.drive.Drive
@@ -480,11 +482,15 @@ object Robot : FalconTimedRobot()
         Shooter.setAngle(SIUnit(.0))
 //        Climber.winchMotorRight.encoder.resetPosition(SIUnit(0.0))
         Collector.deployMotor.setPosition(SIUnit(0.0))
+        Collector.collectorUp = true
+
 
     }
 
     /** This method is called periodically during operator control.  */
-    override fun teleopPeriodic() {}
+    override fun teleopPeriodic() {
+        Controls.operatorController.update()
+    }
 
     /** This method is called once when the robot is disabled.  */
     override fun disabledInit() {}
