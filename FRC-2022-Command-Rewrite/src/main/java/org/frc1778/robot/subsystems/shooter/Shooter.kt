@@ -4,7 +4,6 @@ import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
 import org.frc1778.robot.Constants
 import org.frc1778.robot.Constants.Shooter.NATIVE_ROTATION_MODEL
-import org.frc1778.robot.subsystems.shooter.commands.ShootCommand
 import org.ghrobotics.lib.commands.FalconSubsystem
 import org.ghrobotics.lib.mathematics.units.Meter
 import org.ghrobotics.lib.mathematics.units.SIUnit
@@ -65,30 +64,6 @@ object Shooter : FalconSubsystem() {
     fun toIdle() {
         flywheelMotor.setDutyCycle(0.0)
     }
-
-     fun shoot() {
-         val distance = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296)))
-         val (v, a) = Shooter.getSetPositions(distance)
- //        shooterAngle.setDouble(a.value)
-         // shooterVelocity.setDouble(v.value)
-         runShooter(v)
-         Shooter.setAngle(a)
-     }
-
-     private fun getSetPositions(distance: Double): Pair<SIUnit<Velocity<Radian>>, SIUnit<Radian>> {
-
-         val v: SIUnit<Velocity<Radian>> = if(distance > 75)  {
-             SIUnit(((((0.0004 * distance.pow(3)) - (0.109 * distance.pow(2)) + (11.759 * distance) + 39.691))* (.86*((distance-150)/750))) + 700 - if(distance < 150) 20.5 else 15.0)
-         } else {
-             SIUnit(((0.0004 * distance.pow(3)) - (0.117 * distance.pow(2)) + (11.759 * distance) + 39.691) + if(distance > 75) 25.0 else 10.25)
-         }
-
-         val a: SIUnit<Radian> = SIUnit((-(7.324605E-9 * distance.pow(4)) + (4.4445282E-6 * distance.pow(3)) - (9.211335E-4 * distance.pow(2)) + (.1009318946 * distance) - .078396) + if(distance > 150) .75 else if(distance > 120) .825 else if(distance < 90) .205 else 0.225)
-//         return Pair(v, a)
-         return Pair(SIUnit(200.0), SIUnit(2.05))
-
-     }
-
 
 
     init {

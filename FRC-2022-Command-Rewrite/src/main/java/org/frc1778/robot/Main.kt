@@ -2,8 +2,6 @@
 // set the compiled Java class name to "Main" rather than "MainKt"
 package org.frc1778.robot
 
-//import org.frc1778.util.tables.ShooterMoveAndShootOffsetTable
-import java.io.File
 
 
 /**
@@ -24,8 +22,3 @@ import java.io.File
  */
 fun main() = Robot.start()
 
-//fun main() {
-//
-////    ShooterMoveAndShootOffsetTable.loadJson()
-////    println(ShooterMoveAndShootOffsetTable[listOf(3.0, 2.0, 5.0)])
-//}

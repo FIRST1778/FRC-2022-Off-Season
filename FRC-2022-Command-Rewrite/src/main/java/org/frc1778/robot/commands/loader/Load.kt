@@ -35,7 +35,6 @@ class Load: FalconCommand(Loader) {
             Loader.runLoaderMotor(0.0)
             Loader.runMainMotor(.15)
             Loader.runHopperMotor(.15)
-
         } else if(Loader.isLoaded()) {
             startTime = timer.get()
             wait = true
@@ -45,6 +44,7 @@ class Load: FalconCommand(Loader) {
     }
 
     override fun cancel() {
+        timer.stop()
         Loader.runLoaderMotor(0.0)
         Loader.runMainMotor(.0)
         Loader.runHopperMotor(.0)
@@ -52,6 +52,7 @@ class Load: FalconCommand(Loader) {
     }
 
     override fun end(interrupted: Boolean) {
+        timer.stop()
         Loader.runLoaderMotor(0.0)
         Loader.runMainMotor(.0)
         Loader.runHopperMotor(.0)

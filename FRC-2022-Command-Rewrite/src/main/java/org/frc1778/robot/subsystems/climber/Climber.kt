@@ -2,12 +2,9 @@ package org.frc1778.robot.subsystems.climber
 
 import com.revrobotics.CANSparkMaxLowLevel
 import org.frc1778.robot.Constants
-import org.frc1778.robot.subsystems.climber.commands.ClimberCommands
 import org.ghrobotics.lib.commands.FalconSubsystem
-import org.ghrobotics.lib.mathematics.units.Meter
 import org.ghrobotics.lib.mathematics.units.SIUnit
 import org.ghrobotics.lib.mathematics.units.derived.Radian
-import org.ghrobotics.lib.mathematics.units.derived.radians
 import org.ghrobotics.lib.motors.rev.falconMAX
 
 /**

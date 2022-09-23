@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.I2C
 import org.frc1778.robot.Constants
 import org.frc1778.robot.Robot.allianceColor
-import org.frc1778.robot.subsystems.loader.commands.LoaderCommands
 import org.ghrobotics.lib.commands.FalconSubsystem
 import org.ghrobotics.lib.mathematics.units.nativeunit.DefaultNativeUnitModel
 import org.ghrobotics.lib.motors.ctre.falconFX
@@ -65,11 +64,5 @@ object Loader : FalconSubsystem() {
         mainMotor.setDutyCycle(percent)
     }
 
-    override fun periodic() {
-    }
-
-    init {
-//        defaultCommand = LoaderCommands()
-    }
 
 }

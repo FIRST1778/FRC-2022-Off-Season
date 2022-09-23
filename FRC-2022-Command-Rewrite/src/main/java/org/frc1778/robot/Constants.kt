@@ -31,6 +31,9 @@ object Constants {
     object Shooter {
         const val SHOOTER_FLYWHEEL = 19
         const val ANGLE_ADJUSTMENT = 21
+        const val TARGET_HEIGHT = 1.905
+        const val ASSUMED_DRAG_ACCEL = -.5 // in Meters per Second
+        const val ASSUMED_GRAVITATION_ACCEL = -9.8 + ASSUMED_DRAG_ACCEL
         val NATIVE_ROTATION_MODEL = NativeUnitRotationModel(2048.nativeUnits)
         val NATIVE_SHOOTER_WHEEL_LENGTH_MODEL = NativeUnitLengthModel(1365.3.nativeUnits, 4.inches)
 

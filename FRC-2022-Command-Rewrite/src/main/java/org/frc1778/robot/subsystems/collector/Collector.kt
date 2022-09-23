@@ -3,7 +3,6 @@ package org.frc1778.robot.subsystems.collector
 import com.revrobotics.CANSparkMaxLowLevel
 import edu.wpi.first.wpilibj.DriverStation
 import org.frc1778.robot.Constants
-import org.frc1778.robot.subsystems.collector.commands.CollectorCommands
 import org.ghrobotics.lib.commands.FalconSubsystem
 import org.ghrobotics.lib.mathematics.units.SIUnit
 import org.ghrobotics.lib.mathematics.units.derived.Radian
@@ -45,7 +44,6 @@ object Collector : FalconSubsystem() {
     var collectorDown = false
 
     fun runCollector(percent: Double) {
-//        DriverStation.reportError("Collector Motors set to $percent", false)
         miniLeft.setDutyCycle(percent)
         miniRight.setDutyCycle(percent)
     }
@@ -63,9 +61,6 @@ object Collector : FalconSubsystem() {
         deployMotor.motorController.config_kP(0, 1.6, 30)
         deployMotor.motorController.config_kI(0, 0.0, 30)
         deployMotor.motorController.config_kD(0, 16.0, 30)
-
-
-//        defaultCommand = CollectorCommands()
     }
 
 
