@@ -26,12 +26,7 @@ import org.ghrobotics.lib.wrappers.hid.mapControls
 /**
  * Controls object that holds the driver controller and operator controller
  */
-private var buttonActive = Constants.debugTab2
-    .add("Button One On", false)
-    .withWidget(BuiltInWidgets.kTextView)
-    .withPosition(3,3)
-    .withSize(2,2)
-    .entry
+
 
 object Controls {
     //TODO: Update to use a more personalized HID to go with new commands
