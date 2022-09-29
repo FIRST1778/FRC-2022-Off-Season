@@ -2,6 +2,7 @@ package org.frc1778.robot.subsystems.drive.commands
 
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import kotlin.math.tan
 import org.frc1778.robot.Constants
@@ -16,16 +17,15 @@ open class TeleopDriveCommand : FalconCommand(Drive) {
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
     private val lights = limeTable["ledMode"]
 
+
     override fun execute() {
 
 
         //distance in feet
 
 
-
-
         if(!Drive.Autonomous.auto) {
-                lights.setDouble(1.0)
+                lights.setDouble(3.0)
                 Drive.curvatureDrive(linearSource(), turnSource(), quickTurnSource())
         }
     }

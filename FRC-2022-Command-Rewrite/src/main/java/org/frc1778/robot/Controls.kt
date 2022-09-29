@@ -13,8 +13,11 @@ import org.frc1778.robot.commands.collector.ReverseCollector
 import org.frc1778.robot.commands.collector.RunCollector
 import org.frc1778.robot.commands.collector.ToggleCollector
 import org.frc1778.robot.commands.loader.Load
+import org.frc1778.robot.commands.loader.ManualLoadCommand
+import org.frc1778.robot.commands.shooter.Shoot
 //import org.frc1778.robot.commands.shooter.Shoot
 import org.frc1778.robot.commands.shooter.WeakShoot
+import org.frc1778.robot.subsystems.drive.commands.Aim
 import org.frc1778.robot.subsystems.loader.Loader
 import org.ghrobotics.lib.wrappers.hid.FalconHID
 import org.ghrobotics.lib.wrappers.hid.FalconHIDBuilder
@@ -39,7 +42,11 @@ object Controls {
 //    private val runIntakeCommand = RunIntake()
 
 
-    val driverController = FalconHIDBuilder<Joystick>(Joystick(0)).build()
+    val driverController = driverControllerGenericHID.mapControls {
+        button(1) {
+            change(Aim())
+        }
+    }
 
     //    val operatorController = FalconHIDBuilder<Joystick>(Joystick(1)).build()
     val operatorController: FalconHID<Joystick> = operatorControllerGenericHID.mapControls {
@@ -58,13 +65,14 @@ object Controls {
         }
         //Shooter Commands
         button(3) {
-            change(WeakShoot())
+//            change(WeakShoot())
+            change(Shoot())
         }
         //Collector Controls
         button(9) {
             changeOn(ToggleCollector())
         }
-        button(1) {
+        button(2) {
             change(RunIntake())
         }
         button(4) {
@@ -72,9 +80,9 @@ object Controls {
         }
         //Loader Commands
         //TODO Choose Button for Manual Load
-        button(2) {
-            change(Load())
-        }.build()
+        button(1) {
+            change(ManualLoadCommand())
+        }
 
     }
 }

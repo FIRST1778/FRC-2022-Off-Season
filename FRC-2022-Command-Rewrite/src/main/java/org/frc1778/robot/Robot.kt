@@ -490,6 +490,7 @@ object Robot : FalconTimedRobot()
     /** This method is called periodically during operator control.  */
     override fun teleopPeriodic() {
         Controls.operatorController.update()
+        Controls.driverController.update()
     }
 
     /** This method is called once when the robot is disabled.  */

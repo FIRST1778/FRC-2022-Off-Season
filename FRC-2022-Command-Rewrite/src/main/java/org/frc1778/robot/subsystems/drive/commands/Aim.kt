@@ -2,6 +2,7 @@ package org.frc1778.robot.subsystems.drive.commands
 
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import org.frc1778.robot.Constants
 import org.frc1778.robot.subsystems.drive.Drive
@@ -43,8 +44,10 @@ class Aim : FalconCommand(Drive) {
         val distance = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296)))
         limeDistance.setDouble(distance)
 
+        lights.setDouble(3.0)
+
         if(ta.getDouble(0.0) > 0.0) {
-            lights.setDouble(0.0)
+
             if (tx.getDouble(0.0) > if (distance > 135) 1.95 else 2.7) {
                 Drive.curvatureDrive(
                     0.0,
@@ -65,6 +68,7 @@ class Aim : FalconCommand(Drive) {
 
     override fun cancel() {
         Drive.curvatureDrive(0.0, 0.0, false)
+        super.cancel()
     }
 
     override fun end(interrupted: Boolean) {

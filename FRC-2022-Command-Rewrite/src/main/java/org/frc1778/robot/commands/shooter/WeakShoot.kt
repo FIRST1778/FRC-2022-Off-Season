@@ -16,24 +16,24 @@ class WeakShoot: FalconCommand(Shooter) {
         Shooter.shooterVelocity = 175.0
         Shooter.shooterAngle = 3.0
 
-        if((abs(Shooter.shooterVelocity - 175) < 20 && abs(Shooter.shooterAngle  - 3.0) < .5)) {
-            if(loadCommand?.isFinished == true || loadCommand == null) {
-                loadCommand = Load()
-            }
-            loadCommand!!.schedule()
-        } else {
-            if(loadCommand?.isScheduled == true) {
-               loadCommand!!.cancel()
-            }
-        }
+//        if((abs(Shooter.shooterVelocity - 175) < 20 && abs(Shooter.shooterAngle  - 3.0) < .5)) {
+//            if(loadCommand?.isFinished == true || loadCommand == null) {
+//                loadCommand = Load()
+//            }
+//            loadCommand!!.schedule()
+//        } else {
+//            if(loadCommand?.isScheduled == true) {
+//               loadCommand!!.cancel()
+//            }
+//        }
     }
 
     override fun cancel() {
         Shooter.toIdle()
-        if(loadCommand?.isScheduled == true) {
-            loadCommand!!.cancel()
-        }
-        loadCommand = null
+//        if(loadCommand?.isScheduled == true) {
+//            loadCommand!!.cancel()
+//        }
+//        loadCommand = null
         super.cancel()
     }
 
