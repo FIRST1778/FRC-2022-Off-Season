@@ -1,70 +1,73 @@
 package org.frc1778.robot.commands.shooter
 
 import edu.wpi.first.networktables.NetworkTable
+import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.NetworkTableInstance
-import edu.wpi.first.wpilibj.Timer
-import org.frc1778.robot.commands.loader.Load
-import org.frc1778.robot.subsystems.collector.Collector
-import org.frc1778.robot.subsystems.loader.Loader
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
+import org.frc1778.robot.Constants
+import org.frc1778.robot.Constants.Shooter.Dashboard.actualAngle
+import org.frc1778.robot.Constants.Shooter.Dashboard.actualVelocity
+import org.frc1778.robot.Constants.Shooter.Dashboard.expectedAngle
+import org.frc1778.robot.Constants.Shooter.Dashboard.expectedVelocity
 import org.frc1778.robot.subsystems.shooter.Shooter
 import org.ghrobotics.lib.commands.FalconCommand
-import org.ghrobotics.lib.mathematics.units.derived.Radian
-import org.ghrobotics.lib.mathematics.units.derived.Velocity
-import org.ghrobotics.lib.mathematics.units.SIUnit
-import org.ghrobotics.lib.mathematics.units.meters
+import org.ghrobotics.lib.mathematics.units.derived.degrees
 import org.ghrobotics.lib.wrappers.networktables.get
-import kotlin.math.abs
+import kotlin.math.atan
 import kotlin.math.pow
+import kotlin.math.sqrt
 import kotlin.math.tan
 import kotlin.properties.Delegates
 
 class Shoot : FalconCommand(Shooter) {
-    private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
-    private val timer: Timer = Timer()
-    private val ty = limeTable["ty"]
-    private val velocityThreshold = 5.0
-    private val angleThreshold = .125
     private var d by Delegates.notNull<Double>()
-    private var v by Delegates.notNull<SIUnit<Velocity<Radian>>>()
-    private var a by Delegates.notNull<SIUnit<Radian>>()
-    private var loadCommand: FalconCommand? = null
-    private var done = false
+    private var shooterAngle by Delegates.notNull<Double>()
+    private var shooterVelocity by Delegates.notNull<Double>()
+    private var entryAngle by Delegates.notNull<Double>()
+
 
     override fun execute() {
-//        timer.start()
+//        Shooter.shooterVelocity = velocityTab.getDouble(.5)
+//        Shooter.flywheelMotorMaster.setDutyCycle(.75)
 
-        d = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296))).meters.value
-        v = if (d > 75) {
-            SIUnit(
-                ((((0.0004 * d.pow(3)) - (0.109 * d.pow(2)) + (11.759 * d) + 39.691))
-                        * (.86 * ((d - 150) / 750))) + 700 - if (d < 150) 20.5 else 15.0
-            )
-        } else {
-            SIUnit(
-                ((0.0004 * d.pow(3)) - (0.117 * d.pow(2))
-                        + (11.759 * d) + 39.691) + if (d > 75) 25.0 else 10.25
-            )
-        }
-        a = SIUnit(
-            (-(7.324605E-9 * d.pow(4)) + (4.4445282E-6 * d.pow(3)) - (9.211335E-4 * d.pow(2))
-                    + (.1009318946 * d) - .078396) + if (d > 150) .75 else if (d > 120) .825 else if (d < 90) .205 else 0.225
-        )
+        d = Shooter.getDistance()
+        entryAngle = -6.285 * d + 87.5
+        val midPoint = (-((2 * h / d) + tan(entryAngle)) / (2 * (-(h / d.pow(2)) - (tan(entryAngle) / d))))
+        val heightMax = arc(midPoint)
+        val vy = sqrt(-2 * g * heightMax)
+        val halfTime = heightMax / vy
+        val vx = (midPoint - (.5 * a * (vy / g).pow(2))) / (vy / -g)
+
+        expectedAngle.setDouble(atan(vy/vx))
+        expectedVelocity.setDouble(sqrt(vx.pow(2) + vy.pow(2)))
+
+        Shooter.shooterAngle = actualAngle.getDouble(0.0)
+        Shooter.shooterVelocity = actualVelocity.getDouble(0.0)
 
 
-        Shooter.shooterVelocity = v.value
-        Shooter.shooterAngle = a.value
-        }
+
+
+
+//        Shooter.shooterVelocity = Constants.Shooter.SHOOTER_VELOCITY_MULTIPLIER * sqrt(vx.pow(2) + vy.pow(2))
+//        Shooter.shooterAngle = atan(vy/vx)
+    }
 
     override fun cancel() {
-        Shooter.toIdle()
+        Shooter.shooterVelocity = .5
         super.cancel()
     }
 
-    override fun end(interrupted: Boolean) {
-        Shooter.toIdle()
+    private fun arc(x: Double): Double =
+        (-(h / d.pow(2)) - (tan(entryAngle) / d) * x.pow(2)) + (((2 * h / d) + tan(entryAngle)) * x)
+
+    companion object {
+        private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
+        private const val h = 1.905
+        private val ty = limeTable["ty"]
+        private val tx = limeTable["tx"]
+        private val ta = limeTable["ta"]
+        private const val a = Constants.Shooter.ASSUMED_DRAG_ACCEL
+        private const val g = Constants.Shooter.ASSUMED_GRAVITATION_ACCEL
     }
-
-
-
 
 }

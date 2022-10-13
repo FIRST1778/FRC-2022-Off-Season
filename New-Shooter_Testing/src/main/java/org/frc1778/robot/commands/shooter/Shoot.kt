@@ -13,7 +13,7 @@ class Shoot: FalconCommand(Shooter) {
         Shooter.shooterVelocity = velocityTab.getDouble(.5)
 //        Shooter.flywheelMotorMaster.setDutyCycle(.75)
     }
-    
+
     override fun cancel() {
         Shooter.shooterVelocity = .5
         super.cancel()

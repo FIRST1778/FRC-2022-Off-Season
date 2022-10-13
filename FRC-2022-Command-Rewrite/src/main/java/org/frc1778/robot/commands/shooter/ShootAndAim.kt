@@ -25,15 +25,11 @@
 // * @constructor Create empty Shoot and aim
 // */
 //class ShootAndAim : FalconCommand(Shooter, Collector){
-//    private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
-//    private val h = 1.905
+//
 //    private var a by Delegates.notNull<Double>()
 //    private var d by Delegates.notNull<Double>()
-//    private val acel = -.05
-//    private val g = -9.8 + acel
-//    private val ty = limeTable["ty"]
-//    private val tx = limeTable["tx"]
-//    private val ta = limeTable["ta"]
+//
+//
 //    private var loadCommand by Delegates.notNull<FalconCommand>()
 //    private val shooterSource: Source<Boolean> =  Controls.operatorController.getRawButton(3)
 //
@@ -107,7 +103,7 @@
 //                    v = sqrt(vx.pow(2) + vy.pow(2))
 //                    targetAngle = UtilMath.wrap(angleToTarget + ty.getDouble(0.0), -180.0, .0, 3.75)
 //                }
-//                shooterAngle = UtilMath.clamp(atan2(vy, vx), 15.0, 35.0)
+//                shooterAngle = UtilMath.clamp(atan(vy/vx), 15.0, 35.0)
 //
 //
 //
@@ -150,7 +146,7 @@
 //                    180.0
 //                }
 //            }
-//            Shooter.turretAngle = targetAngle
+////            Shooter.turretAngle = targetAngle
 //        }
 //    }
 //
