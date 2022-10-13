@@ -95,8 +95,8 @@ dependencies {
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
 
-    implementation "com.github.MTHSRoboticsClub:freezylib:-SNAPSHOT"
-    implementation 'com.github.gamingnight5965:FalconLibrary:2022.4.11_BETA'
+//    implementation "com.github.MTHSRoboticsClub:freezylib:-SNAPSHOT"
+    implementation 'com.github.gamingnight5965:FalconLibrary:2022.4.12_BETA'
 
     implementation platform("org.junit:junit-bom:5.8.2")
     testImplementation "org.junit.jupiter:junit-jupiter-api"

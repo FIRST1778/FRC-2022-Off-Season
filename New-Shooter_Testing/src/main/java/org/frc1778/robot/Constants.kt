@@ -19,17 +19,23 @@ object Constants {
     val debugTab2: ShuffleboardTab = Shuffleboard.getTab("TeleOp Info")
 
     object Shooter {
-        const val SHOOTER_FLYWHEEL_MASTER = 19
-        const val SHOOTER_FLYWHEEL_SLAVE = 0
-        const val ANGLE_ADJUSTMENT = 21
-        const val TARGET_HEIGHT = 1.905
-        const val ANGLE_ADJUSTMENT_MIN = 0.0
-        const val ANGLE_ADJUSTMENT_MAX = 0.0
-        const val ASSUMED_DRAG_ACCEL = -.5 // in Meters per Second
-        const val ASSUMED_GRAVITATION_ACCEL = -9.8 + ASSUMED_DRAG_ACCEL
-        val ANGLE_NATIVE_ROTATION_MODEL = NativeUnitRotationModel(2048.nativeUnits)
+        const val SHOOTER_FLYWHEEL_MASTER = 21
+        const val SHOOTER_FLYWHEEL_SLAVE = 19
+        const val ANGLE_ADJUSTMENT = 31
 
-        val NATIVE_SHOOTER_WHEEL_LENGTH_MODEL = NativeUnitLengthModel(1365.3.nativeUnits, 4.inches)
+        const val SHOOTER_VELOCITY_MULTIPLIER = 1.2
+
+        const val SHOOTER_VELOCITY_MAX = 45.0
+        const val SHOOTER_VELOCITY_MIN = 5.75
+        const val TARGET_HEIGHT = 1.905
+        const val ANGLE_ADJUSTMENT_MIN = 20.0
+        const val ANGLE_ADJUSTMENT_MAX = 40.0
+        const val ASSUMED_DRAG_ACCEL = -.5 // in Meters per Second
+
+        const val ASSUMED_GRAVITATION_ACCEL = -9.8 + ASSUMED_DRAG_ACCEL
+        val ANGLE_NATIVE_ROTATION_MODEL = NativeUnitRotationModel((4096*4).nativeUnits)
+
+        val NATIVE_SHOOTER_WHEEL_LENGTH_MODEL = NativeUnitLengthModel(1639.3.nativeUnits, 4.inches)
     }
 
     object Loader {

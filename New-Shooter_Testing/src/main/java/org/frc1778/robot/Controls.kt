@@ -14,7 +14,7 @@ import org.ghrobotics.lib.wrappers.hid.mapControls
 
 object Controls {
     private val operatorControllerGenericHID = Joystick(1)
-    
+
     val operatorController: FalconHID<Joystick> = operatorControllerGenericHID.mapControls {
         //Shooter Commands
         button(3) {
@@ -22,10 +22,10 @@ object Controls {
             change(Shoot())
         }
         greaterThanAxisButton(1, .25) {
-            change(ShooterAngleUp())
+            change(ShooterAngleDown())
         }
         lessThanAxisButton(1, -.25) {
-            change(ShooterAngleDown())
+            change(ShooterAngleUp())
         }
 
         //Collector Controls
@@ -44,5 +44,5 @@ object Controls {
             change(ManualLoadCommand())
         }
     }
-    
+
 }

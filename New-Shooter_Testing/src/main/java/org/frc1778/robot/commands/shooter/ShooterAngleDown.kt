@@ -7,11 +7,11 @@ import org.ghrobotics.lib.mathematics.units.SIUnit
 class ShooterAngleDown: FalconCommand(Shooter) {
 
     override fun execute() {
-        Shooter.angleAdjuster.setDutyCycle(7.5)
+        Shooter.angleAdjuster.setDutyCycle(-0.035)
     }
 
     override fun cancel() {
-        Shooter.angleAdjuster.setVelocity(SIUnit(0.0))
+        Shooter.angleAdjuster.setDutyCycle(0.0)
         super.cancel()
     }
 

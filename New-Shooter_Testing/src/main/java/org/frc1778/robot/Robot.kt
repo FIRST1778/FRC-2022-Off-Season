@@ -3,6 +3,10 @@ package org.frc1778.robot
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
+import edu.wpi.first.wpilibj2.command.PrintCommand
+import org.frc1778.robot.subsystems.collector.Collector
+import org.frc1778.robot.subsystems.loader.Loader
+import org.frc1778.robot.subsystems.shooter.Shooter
 import org.ghrobotics.lib.wrappers.FalconTimedRobot
 
 /**
@@ -24,6 +28,12 @@ object Robot : FalconTimedRobot()
      * This method is run when the robot is first started up and should be used for any
      * initialization code.
      */
+    init {
+        +Collector
+        +Loader
+        +Shooter
+    }
+
     override fun robotInit()
     {
         // Access the RobotContainer object so that it is initialized
@@ -66,6 +76,12 @@ object Robot : FalconTimedRobot()
 
     override fun teleopInit()
     {
+//        CommandScheduler.getInstance().onCommandExecute {
+//            when(it) {
+//                 !is PrintCommand -> PrintCommand("Command Executed: ${it.name}").schedule()
+//                else -> {}
+//            }
+//        }
         // This makes sure that the autonomous stops running when teleop starts running. If you want the
         // autonomous to continue until interrupted by another command, remove this line or comment it out.
         autonomousCommand?.cancel()
@@ -74,7 +90,7 @@ object Robot : FalconTimedRobot()
     /** This method is called periodically during operator control.  */
     override fun teleopPeriodic()
     {
-
+        Controls.operatorController.update()
     }
 
     fun testInit()
