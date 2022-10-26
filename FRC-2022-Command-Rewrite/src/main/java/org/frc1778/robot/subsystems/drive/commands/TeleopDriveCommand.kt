@@ -25,7 +25,7 @@ open class TeleopDriveCommand : FalconCommand(Drive) {
 
 
         if(!Drive.Autonomous.auto) {
-                lights.setDouble(3.0)
+//                lights.setDouble(3.0)
                 Drive.curvatureDrive(linearSource(), turnSource(), quickTurnSource())
         }
     }

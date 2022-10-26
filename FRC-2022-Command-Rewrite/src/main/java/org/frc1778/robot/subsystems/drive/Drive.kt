@@ -29,7 +29,13 @@ object Drive : FalconWestCoastDrivetrain() {
 
 
     override val gyro: Source<Rotation2d>
-        get() = { navx.rotation2d }
+        get() = {
+            if (navx.isMagnetometerCalibrated) {
+                Rotation2d.fromDegrees(navx.fusedHeading.toDouble())
+            } else {
+                Rotation2d.fromDegrees(360.0 - navx.yaw)
+            }
+        }
 
     override val kinematics: DifferentialDriveKinematics
         get() = DifferentialDriveKinematics(Constants.Drive.TRACK_WIDTH.value)

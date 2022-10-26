@@ -42,6 +42,10 @@ class Path {
         path.add(segment)
     }
 
+    fun isFinished(): Boolean {
+        return currSegment >= path.size
+    }
+
     companion object {
         var loaderOn = false
     }

@@ -22,6 +22,7 @@ import org.frc1778.robot.subsystems.loader.Loader
 import org.ghrobotics.lib.wrappers.hid.FalconHID
 import org.ghrobotics.lib.wrappers.hid.FalconHIDBuilder
 import org.ghrobotics.lib.wrappers.hid.mapControls
+import org.ghrobotics.lib.wrappers.hid.triggerAxisButton
 
 /**
  * Controls object that holds the driver controller and operator controller
@@ -64,10 +65,13 @@ object Controls {
             change(Shoot())
         }
         //Collector Controls
-        button(9) {
-            changeOn(ToggleCollector())
-        }
+//        button(9) {
+//            changeOn(ToggleCollector())
+//        }
         button(2) {
+            change(RunIntake())
+        }
+        greaterThanAxisButton(3, .35) {
             change(RunIntake())
         }
         button(4) {

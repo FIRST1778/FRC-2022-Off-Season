@@ -21,12 +21,6 @@ object Controls {
 //            change(WeakShoot())
             change(Shoot())
         }
-        greaterThanAxisButton(1, .25) {
-            change(ShooterAngleDown())
-        }
-        lessThanAxisButton(1, -.25) {
-            change(ShooterAngleUp())
-        }
 
         //Collector Controls
         button(9) {

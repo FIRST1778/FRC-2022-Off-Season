@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import org.frc1778.robot.Constants
 import org.frc1778.robot.subsystems.drive.Drive
+import org.frc1778.robot.subsystems.shooter.Shooter
 import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.wrappers.networktables.get
 import kotlin.math.tan
@@ -41,7 +42,7 @@ class Aim : FalconCommand(Drive) {
         Tx.setDouble(tx.getDouble(0.0))
         Ty.setDouble(ty.getDouble(0.0))
 
-        val distance = ((104.0 - 23.5) / (tan((33.322 + ty.getDouble(0.0)) / 57.296)))
+        val distance = Shooter.getDistance()
         limeDistance.setDouble(distance)
 
         lights.setDouble(3.0)

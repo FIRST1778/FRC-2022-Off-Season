@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand
 import org.frc1778.robot.subsystems.collector.Collector
 import org.frc1778.robot.subsystems.loader.Loader
 import org.frc1778.robot.subsystems.shooter.Shooter
+import org.ghrobotics.lib.mathematics.units.derived.degrees
 import org.ghrobotics.lib.wrappers.FalconTimedRobot
 
 /**
@@ -52,12 +53,11 @@ object Robot : FalconTimedRobot()
     /** This method is called once each time the robot enters Disabled mode.  */
     override fun disabledInit()
     {
-
+        Shooter.toIdle()
     }
 
     override fun disabledPeriodic()
     {
-
     }
 
     /** This autonomous runs the autonomous command selected by your [RobotContainer] class.  */
@@ -85,6 +85,11 @@ object Robot : FalconTimedRobot()
         // This makes sure that the autonomous stops running when teleop starts running. If you want the
         // autonomous to continue until interrupted by another command, remove this line or comment it out.
         autonomousCommand?.cancel()
+        Shooter.angleAdjusterProfiledPID.run {
+            reset(Shooter.shooterAngle)
+            setGoal(20.0)
+        }
+        Shooter.angleEncoder.resetPosition(20.degrees)
     }
 
     /** This method is called periodically during operator control.  */

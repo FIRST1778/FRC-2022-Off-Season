@@ -7,91 +7,47 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import org.frc1778.robot.Constants
 import org.frc1778.robot.UtilMath
+import org.frc1778.robot.commands.shooter.Shoot
 import org.frc1778.robot.commands.shooter.ShooterAnglePIDTuner
 import org.frc1778.robot.commands.shooter.ShooterFlywheelPIDTuning
 import org.ghrobotics.lib.commands.FalconSubsystem
 import org.ghrobotics.lib.mathematics.units.Meter
 import org.ghrobotics.lib.mathematics.units.SIUnit
 import org.ghrobotics.lib.mathematics.units.derived.*
+import org.ghrobotics.lib.mathematics.units.meters
 import org.ghrobotics.lib.mathematics.units.nativeunit.DefaultNativeUnitModel
+import org.ghrobotics.lib.motors.ctre.FalconCTREEncoder
 import org.ghrobotics.lib.motors.ctre.falconFX
 import org.ghrobotics.lib.motors.rev.FalconMAX
 import org.ghrobotics.lib.motors.rev.FalconMAXEncoder
 import org.ghrobotics.lib.motors.rev.falconMAX
 import org.ghrobotics.lib.wrappers.networktables.get
+import kotlin.math.tan
 
 object Shooter : FalconSubsystem() {
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
     private val ty = limeTable["ty"]
+    private val ta = limeTable["ta"]
 
-    val velocityTab: NetworkTableEntry = Constants.debugTab2
-        .add("Angle", 0.0)
-        .withPosition(0, 0)
-        .withSize(3, 3)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
-
-    val kFTab: NetworkTableEntry = Constants.debugTab2
-        .add("kF", 0.0)
-        .withPosition(0, 0)
-        .withSize(3, 3)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
-
-    val kPTab: NetworkTableEntry = Constants.debugTab2
-        .add("kP", 0.0)
-        .withPosition(0, 0)
-        .withSize(3, 3)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
-
-    val kITab: NetworkTableEntry = Constants.debugTab2
-        .add("kI", 0.0)
-        .withPosition(0, 0)
-        .withSize(3, 3)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
-
-    val kDTab: NetworkTableEntry = Constants.debugTab2
-        .add("kD", 0.0)
-        .withPosition(0, 0)
-        .withSize(3, 3)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
-
-    val currVelocity = Constants.debugTab2
-        .add("Current Angle", 0.0)
-        .withPosition(5, 5)
-        .withSize(3, 3)
-        .withWidget(BuiltInWidgets.kGraph)
-        .entry
-
-    private val velocityMultiplier = Constants.debugTab2
-        .add("Velocity Multiplier", 0.0)
-        .withPosition(0, 0)
-        .withSize(5, 5)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
+    private val limeLightAngle = 35.657
+    private val limeLightHeight = 19.75
+    private val targetHeight = 104
 
 
-    var turretAngle: Double
-        get() = angleEncoder.position.inDegrees()
-        set(v) {}
-//        set(v) = angleAdjuster.setPosition(v.degrees)
+
+
 
     var shooterAngle: Double
-        //        get() = angleAdjuster.encoder.rawPosition.value
-        get() = angleEncoder.position.value
-        //        get() = angleAdjuster.canSparkMax.getAlternateEncoder(4096).position
+        get() = angleEncoder.position.inDegrees()
+        //        get() = angleEncoder.rawPosition.value
         set(a) = angleAdjusterProfiledPID.setGoal(
             UtilMath.clamp(
-                a,
-                Constants.Shooter.ANGLE_ADJUSTMENT_MIN,
-                Constants.Shooter.ANGLE_ADJUSTMENT_MAX
+                a, Constants.Shooter.ANGLE_ADJUSTMENT_MIN, Constants.Shooter.ANGLE_ADJUSTMENT_MAX
             )
         )
 //        set(v) = angleAdjuster.setPosition((UtilMath.clamp(v, Constants.Shooter.ANGLE_ADJUSTMENT_MIN, Constants.Shooter.ANGLE_ADJUSTMENT_MAX)).degrees)
@@ -101,7 +57,7 @@ object Shooter : FalconSubsystem() {
         set(v) = flywheelMotorMaster.setVelocity(
             SIUnit(
                 UtilMath.clamp(
-                    (v * velocityMultiplier.getDouble(0.0)),
+                    (v * Constants.Shooter.ShuffleBoard.velocityMultiplier.getDouble(1.0)),
                     Constants.Shooter.SHOOTER_VELOCITY_MIN,
                     Constants.Shooter.SHOOTER_VELOCITY_MAX
                 )
@@ -124,15 +80,16 @@ object Shooter : FalconSubsystem() {
 
     val angleAdjuster = falconMAX(
         Constants.Shooter.ANGLE_ADJUSTMENT,
-        CANSparkMaxLowLevel.MotorType.kBrushless, DefaultNativeUnitModel,
+        CANSparkMaxLowLevel.MotorType.kBrushless,
+        Constants.Shooter.ANGLE_NATIVE_ROTATION_MODEL,
         useAlternateEncoder = false,
         4096
     ) {
-        brakeMode = true
+        brakeMode = false
         outputInverted = false
     }
 
-    private val angleEncoder = FalconMAXEncoder(
+    val angleEncoder = FalconMAXEncoder(
         angleAdjuster.canSparkMax.getAlternateEncoder(4096),
         Constants.Shooter.ANGLE_NATIVE_ROTATION_MODEL
     )
@@ -140,8 +97,7 @@ object Shooter : FalconSubsystem() {
 
     val angleAdjusterPID: PIDController = PIDController(0.0, 0.0, 0.0)
     val angleAdjusterProfiledPID = ProfiledPIDController(
-        0.0, 0.0, 0.0,
-        TrapezoidProfile.Constraints(.5, .75)
+        0.0, 0.0, 0.0, TrapezoidProfile.Constraints(100.0, 400.0)
     )
 
     fun runShooter(percent: Double) {
@@ -158,30 +114,36 @@ object Shooter : FalconSubsystem() {
 
     fun toIdle() {
         flywheelMotorMaster.setDutyCycle(0.0)
+        angleAdjusterProfiledPID.setGoal(Constants.Shooter.ANGLE_NATIVE_ROTATION_MODEL.toNativeUnitPosition(20.degrees).value)
     }
 
-//    override fun periodic() {
-//        angleAdjuster.setVoltage(angleAdjusterProfiledPID.calculate(angleEncoder.position.value).volts)
-//    }
+        fun getDistance(): Double = if(ta.getDouble(0.0) > 0.0) ((targetHeight - limeLightHeight)/tan((limeLightAngle + ty.getDouble(0.0)).degrees.value)) else 0.0
+//    fun getDistance() = Constants.Shooter.ShuffleBoard.distanceTab.getDouble(0.0)
+    override fun periodic() {
+        if (DriverStation.isEnabled()) {
+            angleAdjusterProfiledPID.calculate((angleEncoder.position.inDegrees())).also {
+                Constants.Shooter.ShuffleBoard.voltageSet.setDouble(it)
+                angleAdjuster.setVoltage(it.volts)
+
+            }
+        } else {
+            angleAdjuster.setDutyCycle(0.0)
+        }
+    }
 
 
     init {
-        defaultCommand = ShooterAnglePIDTuner()
+//        defaultCommand = Shoot()
+        Constants.Shooter.ShuffleBoard.distanceTab.setDouble(getDistance())
 
         angleEncoder.resetPosition(20.degrees)
 
-//        angleAdjuster.motorController.config_kF(0, 0.075, 30)
-//        angleAdjuster.motorController.config_kP(0, .85, 30)
-//        angleAdjuster.motorController.config_kI(0,0.0,30)
-//        angleAdjuster.motorController.config_kD(0, 10.0, 30)
-//        angleAdjuster.controller.run {
-//            ff = 0.00075
-//            p = .0085
-//            i = 0.0
-//            d = .1
-//        }
-
-        angleAdjuster.controller.setSmartMotionAllowedClosedLoopError(0.0, 0)
+//
+        angleAdjusterProfiledPID.run {
+            p = .5
+            i = 0.0
+            d = 0.005
+        }
 
 
 

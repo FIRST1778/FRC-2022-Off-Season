@@ -12,17 +12,17 @@ class ToggleCollector: FalconCommand(Collector) {
     private var done = false
 
     override fun execute() {
-        Collector.collectorPosition = if(collectorUp) Collector.Position.DOWN else Collector.Position.UP
-        done = if(collectorUp){
+        Collector.collectorPosition = if(collectorUp()) Collector.Position.DOWN else Collector.Position.UP
+        done = if(collectorUp()){
             if(abs((Collector.collectorPosition.position - Collector.Position.DOWN.position).value) < threshold) {
-                collectorUp = !collectorUp
+//                collectorUp = !collectorUp
                 true
             } else {
                 false
             }
         } else {
             if(abs((Collector.collectorPosition.position - Collector.Position.DOWN.position).value) < threshold) {
-                collectorUp = !collectorUp
+//                collectorUp = !collectorUp
                 true
             } else {
                 false
@@ -35,7 +35,7 @@ class ToggleCollector: FalconCommand(Collector) {
 
     override fun end(interrupted: Boolean) {
         if(interrupted) {
-            collectorUp = !collectorUp
+//            collectorUp = !collectorUp
         }
     }
 

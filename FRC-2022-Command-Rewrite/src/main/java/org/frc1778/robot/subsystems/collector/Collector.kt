@@ -14,7 +14,7 @@ import org.ghrobotics.lib.motors.rev.falconMAX
 
 object Collector : FalconSubsystem() {
 
-    var collectorUp = true
+
 
     enum class Position(val position: SIUnit<Radian>) {
         UP(0.radians),
@@ -40,7 +40,8 @@ object Collector : FalconSubsystem() {
         motionProfileAcceleration = SIUnit(100.0)
     }
 
-
+    val collectorUp = {deployMotor.encoder.position < (Position.UP.position + 1.0.radians)}
+    @Deprecated("Want to Deprecate remove where used", replaceWith = ReplaceWith("collectorUp"))
     var collectorDown = false
 
     fun runCollector(percent: Double) {
@@ -49,7 +50,7 @@ object Collector : FalconSubsystem() {
     }
 
     var collectorPosition: Position
-        get() = if(deployMotor.encoder.position > Position.DOWN.position) Position.DOWN else Position.UP
+        get() = if(deployMotor.encoder.position < (Position.UP.position + 1.0.radians) ) Position.UP else Position.DOWN
         set(v) = deployMotor.setPosition(v.position)
 
 

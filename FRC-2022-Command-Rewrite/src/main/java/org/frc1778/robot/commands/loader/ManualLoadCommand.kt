@@ -4,16 +4,26 @@ import org.frc1778.robot.subsystems.loader.Loader
 import org.ghrobotics.lib.commands.FalconCommand
 
 class ManualLoadCommand : FalconCommand(Loader) {
+
+    private var skip = false
     override fun execute() {
-        Loader.load(.15)
+        if(Loader.isLoaded()) {
+            Loader.load(.15)
+        } else if(!Loader.isLoaded()) {
+            skip = true
+            Loader.runHopperMotor(.15)
+            Loader.runMainMotor(.15)
+        } else if(Loader.isLoaded()) {
+            Loader.toIdle()
+        }
     }
 
     override fun cancel() {
-        Loader.load(0.0)
+        Loader.toIdle()
         super.cancel()
     }
 
     override fun end(interrupted: Boolean) {
-        Loader.load(0.0)
+        Loader.toIdle()
     }
 }

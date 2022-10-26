@@ -1,6 +1,7 @@
 package org.frc1778.robot.commands.shooter
 
 import edu.wpi.first.wpilibj.DriverStation
+import org.frc1778.robot.Constants
 import org.frc1778.robot.subsystems.shooter.Shooter
 import org.ghrobotics.lib.commands.FalconCommand
 
@@ -14,28 +15,28 @@ class ShooterFlywheelPIDTuning : FalconCommand(Shooter) {
     }
 
     override fun execute() {
-        Shooter.shooterVelocity = Shooter.velocityTab.getDouble(0.0)
-        Shooter.currVelocity.setDouble(Shooter.shooterVelocity)
+        Shooter.shooterVelocity = Constants.Shooter.ShuffleBoard.velocityTab.getDouble(0.0)
+        Constants.Shooter.ShuffleBoard.currVelocity.setDouble(Shooter.shooterVelocity)
 
         Shooter.flywheelMotorMaster.motorController.run {
-            if (Shooter.kFTab.getDouble(0.0) != setFF) {
-                config_kF(0, Shooter.kFTab.getDouble(0.0), 30)
-                setFF = Shooter.kFTab.getDouble(0.0)
+            if (Constants.Shooter.ShuffleBoard.kFTab.getDouble(0.0) != setFF) {
+                config_kF(0, Constants.Shooter.ShuffleBoard.kFTab.getDouble(0.0), 30)
+                setFF = Constants.Shooter.ShuffleBoard.kFTab.getDouble(0.0)
                 DriverStation.reportError("Setting FF", false)
             }
-            if (Shooter.kPTab.getDouble(0.0) != setFF) {
-                config_kP(0, Shooter.kPTab.getDouble(0.0), 30)
-                setP = Shooter.kPTab.getDouble(0.0)
+            if (Constants.Shooter.ShuffleBoard.kPTab.getDouble(0.0) != setFF) {
+                config_kP(0, Constants.Shooter.ShuffleBoard.kPTab.getDouble(0.0), 30)
+                setP = Constants.Shooter.ShuffleBoard.kPTab.getDouble(0.0)
                 DriverStation.reportError("Setting P", false)
             }
-            if (Shooter.kITab.getDouble(0.0) != setFF) {
-                config_kI(0, Shooter.kITab.getDouble(0.0), 30)
-                setI = Shooter.kITab.getDouble(0.0)
+            if (Constants.Shooter.ShuffleBoard.kITab.getDouble(0.0) != setFF) {
+                config_kI(0, Constants.Shooter.ShuffleBoard.kITab.getDouble(0.0), 30)
+                setI = Constants.Shooter.ShuffleBoard.kITab.getDouble(0.0)
                 DriverStation.reportError("Setting I", false)
             }
-            if (Shooter.kDTab.getDouble(0.0) != setFF) {
-                config_kD(0, Shooter.kDTab.getDouble(0.0), 30)
-                setD = Shooter.kDTab.getDouble(0.0)
+            if (Constants.Shooter.ShuffleBoard.kDTab.getDouble(0.0) != setFF) {
+                config_kD(0, Constants.Shooter.ShuffleBoard.kDTab.getDouble(0.0), 30)
+                setD = Constants.Shooter.ShuffleBoard.kDTab.getDouble(0.0)
                 DriverStation.reportError("Setting D", false)
             }
         }

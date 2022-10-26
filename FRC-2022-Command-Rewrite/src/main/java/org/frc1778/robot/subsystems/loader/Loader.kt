@@ -64,5 +64,11 @@ object Loader : FalconSubsystem() {
         mainMotor.setDutyCycle(percent)
     }
 
+    fun toIdle() {
+        loaderMotor.setDutyCycle(0.0)
+        mainMotor.setDutyCycle(0.0)
+        hopperMotor.setDutyCycle(0.0)
+    }
+
 
 }
