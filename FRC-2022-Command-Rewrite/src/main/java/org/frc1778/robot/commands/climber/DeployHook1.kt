@@ -6,7 +6,7 @@ import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.mathematics.units.derived.radians
 
 class DeployHook1 : FalconCommand(Climber){
-    private val deployedClimberEncoderValue = 7.5.radians
+    private val deployedClimberEncoderValue = (7.5-2.2).radians
 
     override fun execute() {
         Climber.position = deployedClimberEncoderValue

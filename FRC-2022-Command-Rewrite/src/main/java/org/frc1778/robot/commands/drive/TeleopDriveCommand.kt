@@ -1,17 +1,12 @@
-package org.frc1778.robot.subsystems.drive.commands
+package org.frc1778.robot.commands.drive
 
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
-import edu.wpi.first.wpilibj.DriverStation
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
-import kotlin.math.tan
-import org.frc1778.robot.Constants
 import org.frc1778.robot.Controls
 //import org.frc1778.util.DriveControl
 import org.frc1778.robot.subsystems.drive.Drive
 import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.wrappers.networktables.get
-import kotlin.math.tan
 
 open class TeleopDriveCommand : FalconCommand(Drive) {
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")

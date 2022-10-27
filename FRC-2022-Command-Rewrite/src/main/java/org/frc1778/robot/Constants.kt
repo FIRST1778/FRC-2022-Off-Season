@@ -40,6 +40,11 @@ object Constants {
         val fastSpeed = 80.inches // Faster Speed in inches/sec
         val rotSpeed = 185.degrees // Rotation speed in degrees/sec
 
+        val kP = 0.085
+        val kI = 0.0
+        val kD = 0.0
+        val kF = 0.0045
+
         val NATIVE_UNIT_MODEL = NativeUnitLengthModel(17000.nativeUnits, WHEEL_RADIUS)
     }
 

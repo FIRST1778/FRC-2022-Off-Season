@@ -1,0 +1,87 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 8.917053427619532,
+        "y": 7.6003376338358
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.91036278387053,
+        "y": 6.770392901965164
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "waitTime": 0
+    },
+    {
+      "anchorPoint": {
+        "x": 11.114363260667554,
+        "y": 6.359249082134528
+      },
+      "prevControl": {
+        "x": 10.38821243880584,
+        "y": 6.471596945139548
+      },
+      "nextControl": {
+        "x": 12.900479855013765,
+        "y": 6.0829065147073775
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "waitTime": 0
+    },
+    {
+      "anchorPoint": {
+        "x": 14.807917576523115,
+        "y": 6.7771329645853395
+      },
+      "prevControl": {
+        "x": 14.109324986441928,
+        "y": 6.326827493981385
+      },
+      "nextControl": {
+        "x": 14.109324986441928,
+        "y": 6.326827493981385
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "waitTime": 0
+    },
+    {
+      "anchorPoint": {
+        "x": 11.363745577614006,
+        "y": 5.678502757496916
+      },
+      "prevControl": {
+        "x": 12.745458414749756,
+        "y": 6.170527328769645
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "waitTime": 0
+    }
+  ],
+  "maxVelocity": null,
+  "maxAcceleration": null,
+  "isReversed": false,
+  "markers": [
+    {
+      "position": 2.007272727272755,
+      "name": "Lift Intake"
+    }
+  ]
+}

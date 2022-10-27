@@ -1,15 +1,25 @@
 package org.frc1778.robot
 
+import com.pathplanner.lib.PathPlanner
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.Command
 import org.frc1778.robot.Robot.unaryPlus
+import org.frc1778.robot.commands.RunIntake
+import org.frc1778.robot.commands.drive.Aim
+import org.frc1778.robot.commands.drive.TurnToAngle
+import org.frc1778.robot.commands.loader.ManualLoadCommand
+import org.frc1778.robot.commands.shooter.Shoot
 import org.frc1778.robot.subsystems.climber.Climber
 import org.frc1778.robot.subsystems.collector.Collector
 import org.frc1778.robot.subsystems.drive.Drive
 import org.frc1778.robot.subsystems.loader.Loader
 import org.frc1778.robot.subsystems.shooter.Shooter
-import org.frc1778.util.pathing.*
+import org.frc1778.util.pathing.FastLine
+import org.frc1778.util.pathing.Line
+import org.frc1778.util.pathing.Path
+import org.frc1778.util.pathing.PathCommand
+import org.frc1778.util.pathing.Turn
 import org.frc1778.util.pathing.events.*
 import org.ghrobotics.lib.mathematics.units.derived.degrees
 import org.ghrobotics.lib.mathematics.units.inches
@@ -324,6 +334,20 @@ object RobotContainer {
         })
     }
 
+    val testAutoCommand = {
+        Drive.followTrajectory(PathPlanner.loadPath("Short 2 Ball", 5.0, 2.5))
+            .alongWith(RunIntake())
+            .andThen(TurnToAngle(180.0))
+            .andThen(
+                Aim().alongWith(Shoot()).withTimeout(.375)
+                    .andThen(Shoot().alongWith(ManualLoadCommand()))
+            )
+    }
+
+    init {
+        val path = PathPlanner.loadPath("4 Ball Second", 5.0, 2.5)
+    }
+
 
     private val autoModeChooser = SendableChooser<AutoMode>().apply {
         AutoMode.values().forEach { addOption(it.optionName, it) }
@@ -344,7 +368,7 @@ object RobotContainer {
         CUSTOM_AUTO_2("Standard 2 Ball", autoPath2),
         CUSTOM_AUTO_5("Short 2 Ball", autoPath4),
         CUSTOM_AUTO_3("1 Ball", autoPath3),
-        CUSTOM_AUTO_4("Test Auto", testAutoPath)
+        CUSTOM_AUTO_4("Auto Command Test: Short 2 Ball", testAutoCommand)
         ;
 
         companion object {

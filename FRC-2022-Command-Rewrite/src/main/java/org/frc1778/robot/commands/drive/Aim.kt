@@ -1,15 +1,13 @@
-package org.frc1778.robot.subsystems.drive.commands
+package org.frc1778.robot.commands.drive
 
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
-import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import org.frc1778.robot.Constants
 import org.frc1778.robot.subsystems.drive.Drive
 import org.frc1778.robot.subsystems.shooter.Shooter
 import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.wrappers.networktables.get
-import kotlin.math.tan
 
 class Aim : FalconCommand(Drive) {
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")

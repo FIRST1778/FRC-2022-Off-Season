@@ -1,28 +1,18 @@
 package org.frc1778.robot
 
 import edu.wpi.first.wpilibj.Joystick
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import org.frc1778.robot.commands.ReverseIntake
 import org.frc1778.robot.commands.RunIntake
-import org.frc1778.robot.commands.StopIntake
 import org.frc1778.robot.commands.climber.ClimberToClimbPosition
 import org.frc1778.robot.commands.climber.ClimberToRestPosition
 import org.frc1778.robot.commands.climber.DeployHook1
 import org.frc1778.robot.commands.climber.DeployHook2
-import org.frc1778.robot.commands.collector.ReverseCollector
-import org.frc1778.robot.commands.collector.RunCollector
-import org.frc1778.robot.commands.collector.ToggleCollector
-import org.frc1778.robot.commands.loader.Load
 import org.frc1778.robot.commands.loader.ManualLoadCommand
 import org.frc1778.robot.commands.shooter.Shoot
 //import org.frc1778.robot.commands.shooter.Shoot
-import org.frc1778.robot.commands.shooter.WeakShoot
-import org.frc1778.robot.subsystems.drive.commands.Aim
-import org.frc1778.robot.subsystems.loader.Loader
+import org.frc1778.robot.commands.drive.Aim
 import org.ghrobotics.lib.wrappers.hid.FalconHID
-import org.ghrobotics.lib.wrappers.hid.FalconHIDBuilder
 import org.ghrobotics.lib.wrappers.hid.mapControls
-import org.ghrobotics.lib.wrappers.hid.triggerAxisButton
 
 /**
  * Controls object that holds the driver controller and operator controller

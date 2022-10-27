@@ -6,9 +6,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry
-import org.apache.commons.math3.geometry.euclidean.threed.Rotation
 import org.frc1778.robot.Constants
-import org.frc1778.robot.subsystems.drive.commands.TeleopDriveCommand
+import org.frc1778.robot.commands.drive.TeleopDriveCommand
 import org.ghrobotics.lib.localization.TimePoseInterpolatableBuffer
 import org.ghrobotics.lib.mathematics.units.Meter
 import org.ghrobotics.lib.mathematics.units.SIUnit
@@ -111,9 +110,12 @@ object Drive : FalconWestCoastDrivetrain() {
         curvatureDrive(0.0, 0.0, false)
     }
 
+    fun getHeading(): Double {
+        return gyro().degrees
+    }
+
 
     override val poseBuffer = TimePoseInterpolatableBuffer()
-
 
 
    override fun disableClosedLoopControl() {}
@@ -141,15 +143,19 @@ object Drive : FalconWestCoastDrivetrain() {
             follow(rightMotor)
         }
 
-        leftMotor.motorController.config_kF(0, 0.15, 30)
-        leftMotor.motorController.config_kP(0, .65, 30)
-        leftMotor.motorController.config_kI(0,0.0,30)
-        leftMotor.motorController.config_kD(0, 4.0, 30)
+        leftMotor.motorController.run {
+            config_kF(0, Constants.Drive.kF, 30)
+            config_kP(0, Constants.Drive.kP, 30)
+            config_kI(0, Constants.Drive.kI, 30)
+            config_kD(0, Constants.Drive.kD, 30)
+        }
 
-        rightMotor.motorController.config_kF(0, 0.15, 30)
-        rightMotor.motorController.config_kP(0, .65, 30)
-        rightMotor.motorController.config_kI(0,0.0,30)
-        rightMotor.motorController.config_kD(0, 4.0, 30)
+        rightMotor.motorController.run {
+            config_kF(0, Constants.Drive.kF, 30)
+            config_kP(0, Constants.Drive.kP, 30)
+            config_kI(0, Constants.Drive.kI, 30)
+            config_kD(0, Constants.Drive.kD, 30)
+        }
 
         defaultCommand = TeleopDriveCommand()
     }
