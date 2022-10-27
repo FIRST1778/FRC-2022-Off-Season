@@ -16,6 +16,7 @@ import org.frc1778.robot.subsystems.drive.Drive
 import org.frc1778.robot.subsystems.loader.Loader
 import org.frc1778.robot.subsystems.shooter.Shooter
 import org.frc1778.util.pathing.FastLine
+import org.frc1778.util.pathing.Follow
 import org.frc1778.util.pathing.Line
 import org.frc1778.util.pathing.Path
 import org.frc1778.util.pathing.PathCommand
@@ -37,10 +38,11 @@ object RobotContainer {
             add(CollectorDown)
             add(Wait(.3))
             add(CollectorOn)
-            add(Line(43.inches.value, 0.degrees))
+            add(Follow(PathPlanner.loadPath("4 Ball First", 8.0, 2.5)))
             add(Turn((-218).degrees))
-
-
+            add(Stop)
+            add(Wait(.05))
+            add(Aim)
             add(Stop)
 
             //Shoot
@@ -58,14 +60,17 @@ object RobotContainer {
             add(LoaderOff)
             add(ShooterOff)
 
-            add(FastLine(105.inches.value, (-93).degrees))
-            add(Stop)
+            add(Follow(PathPlanner.loadPath("4 Ball Second", 8.0, 2.0)))
 
-            add(FastLine(142.inches.value, (-49).degrees))
-            add(Stop)
 
-            add(FastLine(120.inches.value, 170.degrees))
-            add(Stop)
+//            add(FastLine(105.inches.value, (-93).degrees))
+//            add(Stop)
+//
+//            add(FastLine(142.inches.value, (-49).degrees))
+//            add(Stop)
+//
+//            add(FastLine(120.inches.value, 170.degrees))
+//            add(Stop)
 
             add(Wait(.15))
             add(Aim)
@@ -96,7 +101,7 @@ object RobotContainer {
             add(CollectorDown)
             add(Wait(.3))
             add(CollectorOn)
-            add(Line(60.inches.value, 0.degrees))
+            add(Follow(PathPlanner.loadPath("Standard 2 Ball", 8.0, 2.5)))
             add(Turn(190.degrees))
             add(Stop)
             add(Aim)
@@ -127,7 +132,7 @@ object RobotContainer {
             add(CollectorDown)
             add(Wait(.3))
             add(CollectorOn)
-            add(Line(43.inches.value, 0.degrees))
+            add(Follow(PathPlanner.loadPath("Short 2 Ball", 8.0, 2.5)))
             add(Turn((-210).degrees))
             add(Stop)
             add(Aim)
@@ -148,8 +153,6 @@ object RobotContainer {
             add(LoaderOff)
             add(ShooterOff)
             add(CollectorOff)
-            add(Line(-5.inches.value, 0.degrees))
-            add(Stop)
         })
     }
 
@@ -180,12 +183,12 @@ object RobotContainer {
             add(CollectorDown)
             add(Wait(.3))
             add(CollectorOn)
-            add(Line(43.inches.value, 0.degrees))
+            add(Follow(PathPlanner.loadPath("3 Ball First", 8.0, 2.5)))
             add(Turn((-218).degrees))
             add(Stop)
-//            add(Wait(.15))
-//            add(Aim)
-//            add(Stop)
+            add(Wait(.05))
+            add(Aim)
+            add(Stop)
 
             //Shoot
             add(CollectorOff)
@@ -202,7 +205,8 @@ object RobotContainer {
             add(LoaderOff)
             add(ShooterOff)
 
-            add(Line(105.inches.value, (-93).degrees))
+//            add(Line(105.inches.value, (-93).degrees))
+            add(Follow(PathPlanner.loadPath("3 Ball Second", 8.0, 1.25)))
             add(Turn((115).degrees))
             add(Stop)
 
@@ -229,7 +233,7 @@ object RobotContainer {
             add(Wait(.3))
             add(CollectorOn)
             add(Line(43.inches.value, 0.degrees))
-            add(Turn((-187).degrees))
+            add(Turn((-196).degrees))
             add(Stop)
 //            add(Wait(.15))
 //            add(Aim)
@@ -250,7 +254,7 @@ object RobotContainer {
             add(LoaderOff)
             add(ShooterOff)
 //
-            add(Line(105.inches.value, (-75).degrees))
+            add(Line(105.inches.value, (-82).degrees))
             add(Turn((115).degrees))
             add(Stop)
 
