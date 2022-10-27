@@ -17,9 +17,5 @@ class DeployHook1 : FalconCommand(Climber){
         return Climber.position == deployedClimberEncoderValue
     }
 
-    override fun end(interrupted: Boolean) {
-        if(interrupted) {
-            Climber.position = 0.radians
-        }
-    }
+
 }

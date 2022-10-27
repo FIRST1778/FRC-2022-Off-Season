@@ -37,16 +37,16 @@ object Controls {
     //    val operatorController = FalconHIDBuilder<Joystick>(Joystick(1)).build()
     val operatorController: FalconHID<Joystick> = operatorControllerGenericHID.mapControls {
         //Climber Controls
-        button(7) {
+        button(6) {
             change(ClimberToRestPosition())
         }
-        button(10) {
+        button(7) {
             change(DeployHook1())
         }
         button(8) {
             change(DeployHook2())
         }
-        button(5) {
+        button(10) {
             change(ClimberToClimbPosition())
         }
         //Shooter Commands

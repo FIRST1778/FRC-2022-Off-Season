@@ -6,7 +6,7 @@ import org.frc1778.robot.subsystems.collector.Collector.collectorUp
 import org.ghrobotics.lib.commands.FalconCommand
 import kotlin.math.abs
 
-
+@Deprecated("Robot Automatically Lifts Collector Arm")
 class ToggleCollector: FalconCommand(Collector) {
     private val threshold = .05
     private var done = false
