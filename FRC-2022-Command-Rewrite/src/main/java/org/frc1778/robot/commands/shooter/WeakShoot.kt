@@ -13,8 +13,8 @@ class WeakShoot: FalconCommand(Shooter) {
 
 
     override fun execute() {
-        Shooter.shooterVelocity = 175.0
-        Shooter.shooterAngle = 3.0
+        Shooter.shooterVelocity = 325.0
+        Shooter.shooterAngle = 4.5
 
 //        if((abs(Shooter.shooterVelocity - 175) < 20 && abs(Shooter.shooterAngle  - 3.0) < .5)) {
 //            if(loadCommand?.isFinished == true || loadCommand == null) {

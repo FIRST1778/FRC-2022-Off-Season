@@ -6,28 +6,13 @@ import org.frc1778.robot.subsystems.collector.Collector.collectorUp
 import org.ghrobotics.lib.commands.FalconCommand
 import kotlin.math.abs
 
-@Deprecated("Robot Automatically Lifts Collector Arm")
+//@Deprecated("Robot Automatically Lifts Collector Arm")
 class ToggleCollector: FalconCommand(Collector) {
     private val threshold = .05
     private var done = false
 
     override fun execute() {
         Collector.collectorPosition = if(collectorUp()) Collector.Position.DOWN else Collector.Position.UP
-        done = if(collectorUp()){
-            if(abs((Collector.collectorPosition.position - Collector.Position.DOWN.position).value) < threshold) {
-//                collectorUp = !collectorUp
-                true
-            } else {
-                false
-            }
-        } else {
-            if(abs((Collector.collectorPosition.position - Collector.Position.DOWN.position).value) < threshold) {
-//                collectorUp = !collectorUp
-                true
-            } else {
-                false
-            }
-        }
     }
 
     override fun isFinished(): Boolean = done

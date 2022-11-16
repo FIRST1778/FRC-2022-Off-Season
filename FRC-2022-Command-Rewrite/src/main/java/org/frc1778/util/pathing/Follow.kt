@@ -24,7 +24,7 @@ class Follow(private val trajectory: Trajectory): PathSegment() {
     override fun initialize(cumulativeTime: Double) {
         trajectoryCommand.initialize()
         Drive.resetYaw()
-        Drive.reset(trajectory.initialPose)
+//        Drive.reset(trajectory.initialPose)
         startTime = cumulativeTime
         timeToComplete = cumulativeTime + trajectory.totalTimeSeconds
     }

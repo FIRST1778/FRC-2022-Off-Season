@@ -1,26 +1,15 @@
 package org.frc1778.robot
 
-import com.pathplanner.lib.PathPlanner
-import edu.wpi.first.math.trajectory.Trajectory
 import edu.wpi.first.wpilibj.DriverStation
-import edu.wpi.first.wpilibj.Timer
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj.util.Color
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import org.frc1778.robot.commands.collector.ToggleCollector
 import org.frc1778.robot.subsystems.climber.Climber
 import org.frc1778.robot.subsystems.collector.Collector
 import org.frc1778.robot.subsystems.drive.Drive
-import org.frc1778.robot.subsystems.loader.Loader
 import org.frc1778.robot.subsystems.shooter.Shooter
-import org.frc1778.util.pathing.*
-import org.frc1778.util.pathing.events.*
 import org.ghrobotics.lib.mathematics.units.SIUnit
-import org.ghrobotics.lib.mathematics.units.derived.degrees
 import org.ghrobotics.lib.mathematics.units.derived.radians
-import org.ghrobotics.lib.mathematics.units.inches
 import org.ghrobotics.lib.wrappers.FalconTimedRobot
 
 /**
@@ -70,6 +59,8 @@ object Robot : FalconTimedRobot()
         Drive.Autonomous.auto = true
         Drive.resetEncoders()
         Climber.winchMotorRight.encoder.resetPosition(SIUnit(0.0))
+        Shooter.angleAdjuster.encoder.resetPosition(0.0.radians)
+        Climber.winchMotorRight.encoder.resetPosition(SIUnit(0.0))
 
 
         /* This autonomousInit function (along with the initAutoChooser function) shows how to select
@@ -79,6 +70,7 @@ object Robot : FalconTimedRobot()
 
         If you prefer the LabVIEW Dashboard, remove all the chooser code and uncomment the following line: */
         //selectedAutoMode = AutoMode.valueOf(SmartDashboard.getString("Auto Selector", AutoMode.default.name))
+        autonomousCommand!!.schedule()
 
     }
 
@@ -93,14 +85,16 @@ object Robot : FalconTimedRobot()
     /** This method is called once when teleop is enabled.  */
     override fun teleopInit() {
         Drive.Autonomous.auto = false
-        Climber.winchMotorRight.encoder.resetPosition(SIUnit(0.0))
-        Collector.deployMotor.setPosition(SIUnit(0.0))
-        Shooter.angleAdjuster.encoder.resetPosition(0.0.radians)
-
+//        Climber.winchMotorRight.encoder.resetPosition(SIUnit(0.0))
+//        Collector.deployMotor.setPosition(SIUnit(0.0))
+//        Shooter.angleAdjuster.encoder.resetPosition(0.0.radians)
+        Collector.collectorPosition = Collector.Position.UP
+        CommandScheduler.getInstance().cancelAll()
     }
 
     /** This method is called periodically during operator control.  */
     override fun teleopPeriodic() {
+//        DriverStation.reportError("Stick: ${Controls.operatorController.getRawAxis(1)()}", false)
         Controls.operatorController.update()
         Controls.driverController.update()
     }

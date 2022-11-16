@@ -40,7 +40,7 @@ object Collector : FalconSubsystem() {
         motionProfileAcceleration = SIUnit(100.0)
     }
 
-    val collectorUp = {deployMotor.encoder.position < (Position.UP.position + 1.0.radians)}
+    var collectorUp = {deployMotor.encoder.position < (Position.UP.position + 1.0.radians)}
     @Deprecated("Want to Deprecate remove where used", replaceWith = ReplaceWith("collectorUp"))
     var collectorDown = false
 
@@ -53,7 +53,9 @@ object Collector : FalconSubsystem() {
         get() = if(deployMotor.encoder.position < (Position.UP.position + 1.0.radians) ) Position.UP else Position.DOWN
         set(v) = deployMotor.setPosition(v.position)
 
-
+    fun resetCollectorPosition(pos: Position) {
+        deployMotor.encoder.resetPosition(Position.DOWN.position)
+    }
 
     init {
         deployMotor.encoder.resetPosition(SIUnit(0.0))

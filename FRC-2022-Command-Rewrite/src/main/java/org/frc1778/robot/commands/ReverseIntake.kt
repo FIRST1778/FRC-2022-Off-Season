@@ -27,9 +27,5 @@ class ReverseIntake : FalconCommand(Collector, Loader) {
         super.cancel()
     }
 
-    override fun end(interrupted: Boolean) {
-        super.end(interrupted)
-    }
-
     override fun isFinished() = done
 }

@@ -13,4 +13,10 @@ class ClimberToRestPosition : FalconCommand(Climber) {
         return Climber.position == 0.0.radians
     }
 
+    override fun end(interrupted: Boolean) {
+        if(!interrupted) {
+            Climber.winchMotorRight.setDutyCycle(0.0)
+        }
+    }
+
 }

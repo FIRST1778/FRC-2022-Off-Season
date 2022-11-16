@@ -1,8 +1,11 @@
 package org.frc1778.robot.commands.shooter
 
+import edu.wpi.first.wpilibj.GenericHID
 import org.frc1778.robot.Constants
+import org.frc1778.robot.Controls
 import org.frc1778.robot.subsystems.shooter.Shooter
 import org.ghrobotics.lib.commands.FalconCommand
+import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.properties.Delegates
 
@@ -29,13 +32,22 @@ class Shoot : FalconCommand(Shooter) {
         Shooter.shooterVelocity = shooterVelocity
         Shooter.shooterAngle = shooterAngle
 
+        if (abs(Shooter.shooterVelocity - shooterVelocity) < 45) {
+            Controls.operatorControllerGenericHID.setRumble(GenericHID.RumbleType.kRightRumble, .125)
+            Controls.operatorControllerGenericHID.setRumble(GenericHID.RumbleType.kLeftRumble, .125)
+        } else {
+            Controls.operatorControllerGenericHID.setRumble(GenericHID.RumbleType.kLeftRumble, 0.0)
+            Controls.operatorControllerGenericHID.setRumble(GenericHID.RumbleType.kRightRumble, 0.0)
+        }
+
     }
 
     override fun cancel() {
 //        Shooter.toIdle()
         Shooter.shooterAngle = 0.0
         Shooter.flywheelMotor.setDutyCycle(0.0)
-        Shooter.flywheelMotor.motorController.temperature
+        Controls.operatorControllerGenericHID.setRumble(GenericHID.RumbleType.kLeftRumble, 0.0)
+        Controls.operatorControllerGenericHID.setRumble(GenericHID.RumbleType.kRightRumble, 0.0)
         super.cancel()
     }
 

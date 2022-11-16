@@ -16,7 +16,7 @@ object Climber : FalconSubsystem() {
         brakeMode = true
         outputInverted = false
         useMotionProfileForPosition = true
-        motionProfileCruiseVelocity = SIUnit(20.0)
+        motionProfileCruiseVelocity = SIUnit(40.0)
         motionProfileAcceleration = SIUnit(250.0)
     }
 

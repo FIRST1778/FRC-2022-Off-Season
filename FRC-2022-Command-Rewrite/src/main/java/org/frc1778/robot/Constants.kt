@@ -17,9 +17,14 @@ import org.ghrobotics.lib.mathematics.units.nativeunit.nativeUnits
  */
 
 object Constants {
+
+    val debugTab2: ShuffleboardTab = Shuffleboard.getTab("TeleOp Info")
+    val shooterPIDTuningTab: ShuffleboardTab = Shuffleboard.getTab("Shooter PID Tuning")
+    val shooterTuningTab: ShuffleboardTab = Shuffleboard.getTab("Shooter Tuning")
     init {
         Shuffleboard.update()
         Shooter.ShuffleBoard //Init Shuffleboard Tabs
+        Drive.ShuffleBoard //Init Shuffleboard Tabs
     }
 
     object Drive {
@@ -40,17 +45,25 @@ object Constants {
         val fastSpeed = 80.inches // Faster Speed in inches/sec
         val rotSpeed = 185.degrees // Rotation speed in degrees/sec
 
-        val kP = 0.085
-        val kI = 0.0
-        val kD = 0.0
-        val kF = 0.0045
+        const val kP = 0.105
+        const val kI = 0.0
+        const val kD = 0.0
+        const val kF = 0.0055
 
-        val NATIVE_UNIT_MODEL = NativeUnitLengthModel(17000.nativeUnits, WHEEL_RADIUS)
+        val NATIVE_UNIT_MODEL = NativeUnitLengthModel(16500.nativeUnits, WHEEL_RADIUS)
+
+        object ShuffleBoard {
+            val gyro: NetworkTableEntry = debugTab2
+                .add("Gyro", 0.0)
+                .entry
+
+            val pose = debugTab2
+                .add("Pose 2d", "")
+                .entry
+        }
     }
 
-    val debugTab2: ShuffleboardTab = Shuffleboard.getTab("TeleOp Info")
-    val shooterPIDTuningTab: ShuffleboardTab = Shuffleboard.getTab("Shooter PID Tuning")
-    val shooterTuningTab: ShuffleboardTab = Shuffleboard.getTab("Shooter Tuning")
+
 
 
     object Shooter {

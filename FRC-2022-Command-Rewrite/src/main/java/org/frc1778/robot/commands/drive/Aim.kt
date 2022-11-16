@@ -16,32 +16,14 @@ class Aim : FalconCommand(Drive) {
     private val ta = limeTable["ta"]
     private val lights = limeTable["ledMode"]
 
-    private val Tx = Constants.debugTab2
-        .add("Tx", 0)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
-
-    private val limeDistance = Constants.debugTab2
-        .add("Distance", 0)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
-
-    private val Ty = Constants.debugTab2
-        .add("Ty", 0)
-        .withWidget(BuiltInWidgets.kTextView)
-        .entry
-
 
 
 
 
     override fun execute() {
 
-        Tx.setDouble(tx.getDouble(0.0))
-        Ty.setDouble(ty.getDouble(0.0))
 
         val distance = Shooter.getDistance()
-        limeDistance.setDouble(distance)
 
         lights.setDouble(3.0)
 

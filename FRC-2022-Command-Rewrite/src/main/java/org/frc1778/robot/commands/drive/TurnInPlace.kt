@@ -21,13 +21,13 @@ class TurnToAngle(private val targetAngle: Double) : ProfiledPIDCommand(
         Constants.Drive.kI,
         Constants.Drive.kD,
         TrapezoidProfile.Constraints(
-            180.0,
-            180.0
+            2.5,
+            .25
 
         )
     ).apply {
-          enableContinuousInput(-180.0, 180.0)
-        setTolerance(5.0, 15.0)
+        enableContinuousInput(-180.0, 180.0)
+        setTolerance(5.0, 5.0)
     },
     Drive::getHeading,
     targetAngle,

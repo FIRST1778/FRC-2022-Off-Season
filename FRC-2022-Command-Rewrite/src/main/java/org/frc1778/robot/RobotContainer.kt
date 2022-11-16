@@ -4,6 +4,7 @@ import com.pathplanner.lib.PathPlanner
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.InstantCommand
 import org.frc1778.robot.Robot.unaryPlus
 import org.frc1778.robot.commands.RunIntake
 import org.frc1778.robot.commands.drive.Aim
@@ -338,19 +339,22 @@ object RobotContainer {
         })
     }
 
+    val driveForward = {
+        Drive.followTrajectory(PathPlanner.loadPath("Forward", 8.0, 1.25, true), first=true)
+            .andThen(Aim().alongWith(Shoot()).withTimeout(.375))
+            .andThen(Shoot().alongWith(ManualLoadCommand()).withTimeout(.5))
+    }
+
     val testAutoCommand = {
-        Drive.followTrajectory(PathPlanner.loadPath("Short 2 Ball", 5.0, 2.5))
-            .alongWith(RunIntake())
-            .andThen(TurnToAngle(180.0))
+        Drive.followTrajectory(PathPlanner.loadPath("Short 2 Ball", 5.0, 2.5), first=true)
+            .deadlineWith(RunIntake())
+            .andThen(TurnToAngle(-100.0))
             .andThen(
                 Aim().alongWith(Shoot()).withTimeout(.375)
                     .andThen(Shoot().alongWith(ManualLoadCommand()))
             )
     }
 
-    init {
-        val path = PathPlanner.loadPath("4 Ball Second", 5.0, 2.5)
-    }
 
 
     private val autoModeChooser = SendableChooser<AutoMode>().apply {
@@ -372,7 +376,8 @@ object RobotContainer {
         CUSTOM_AUTO_2("Standard 2 Ball", autoPath2),
         CUSTOM_AUTO_5("Short 2 Ball", autoPath4),
         CUSTOM_AUTO_3("1 Ball", autoPath3),
-        CUSTOM_AUTO_4("Auto Command Test: Short 2 Ball", testAutoCommand)
+        CUSTOM_AUTO_4("Auto Command Test: Short 2 Ball", testAutoCommand),
+        CUSTOM_AUTO_9("Drive Back And Shoot", driveForward)
         ;
 
         companion object {

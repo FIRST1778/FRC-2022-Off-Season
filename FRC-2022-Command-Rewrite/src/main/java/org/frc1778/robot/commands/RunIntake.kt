@@ -11,9 +11,7 @@ class RunIntake : FalconCommand(Collector, Loader) {
     private var done = false
 
     override fun initialize() {
-        if(Collector.collectorPosition != Collector.Position.DOWN) {
-            Collector.collectorPosition = Collector.Position.DOWN
-        }
+        Collector.collectorPosition = Collector.Position.DOWN
     }
     override fun execute() {
         Collector.runCollector(if(!Collector.collectorUp()) .30 else 0.0)
@@ -29,10 +27,6 @@ class RunIntake : FalconCommand(Collector, Loader) {
         Collector.runCollector(0.0)
         Loader.runMain(0.0)
         super.cancel()
-    }
-
-    override fun end(interrupted: Boolean) {
-        super.end(interrupted)
     }
 
     override fun isFinished() = done
