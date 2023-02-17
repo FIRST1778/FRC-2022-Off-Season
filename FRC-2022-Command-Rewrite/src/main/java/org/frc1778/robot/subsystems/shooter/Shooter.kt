@@ -1,5 +1,6 @@
 package org.frc1778.robot.subsystems.shooter
 
+import edu.wpi.first.math.controller.BangBangController
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
 import org.frc1778.robot.Constants
@@ -26,6 +27,10 @@ object Shooter : FalconSubsystem() {
     private const val targetHeight = 104
 
 
+    var shooterController = BangBangController(
+
+    )
+
     var shooterAngle: Double
         get() = angleAdjuster.encoder.position.value
         set(a) = angleAdjuster.setPosition(
@@ -38,7 +43,7 @@ object Shooter : FalconSubsystem() {
 
     var shooterVelocity: Double
         get() = flywheelMotor.encoder.velocity.value
-        set(v) = flywheelMotor.setVelocity(SIUnit(v))
+        set(v) = flywheelMotor.setDutyCycle(shooterController.calculate(flywheelMotor.encoder.velocity.value, v) * .75)
 
 
     val flywheelMotor =

@@ -9,6 +9,10 @@ import org.frc1778.robot.subsystems.drive.Drive
 import org.frc1778.util.UtilMath
 import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.wrappers.networktables.get
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.withSign
 
 open class TeleopDriveCommand : FalconCommand(Drive) {
     private val limeTable: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
@@ -17,11 +21,11 @@ open class TeleopDriveCommand : FalconCommand(Drive) {
 
     override fun execute() {
 //        lights.setDouble()
-        val maxThrottle = .175
+        val maxThrottle = .50
         Drive.curvatureDrive(
-            UtilMath.clamp(linearSource(), -maxThrottle, maxThrottle),
-            UtilMath.clamp(turnSource(), -maxThrottle, maxThrottle),
-            quickTurnSource()
+            min(abs(linearSource()), maxThrottle).withSign(linearSource()),
+            min(abs(turnSource()), maxThrottle).withSign(turnSource()),
+            true //quickTurnSource()
         )
 
     }
